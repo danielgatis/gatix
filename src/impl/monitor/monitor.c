@@ -50,12 +50,12 @@ static void k_move_cursor()
   uint16_t cursorLocation = cursor_y * 80 + cursor_x;
 
   // This sends a command to indicies 14 and 15 in the
-  //  CRT Control Register of the VGA controller. These
-  //  are the high and low bytes of the index that show
-  //  where the hardware cursor is to be 'blinking'. To
-  //  learn more, you should look up some VGA specific
-  //  programming documents. A great start to graphics:
-  //  http://www.brackeen.com/home/vga
+  // CRT Control Register of the VGA controller. These
+  // are the high and low bytes of the index that show
+  // where the hardware cursor is to be 'blinking'. To
+  // learn more, you should look up some VGA specific
+  // programming documents. A great start to graphics:
+  // http://www.brackeen.com/home/vga.
   k_outb(0x3D4, 14);                  // tell the VGA board we are setting the high cursor byte.
   k_outb(0x3D5, cursorLocation >> 8); // send the high cursor byte.
   k_outb(0x3D4, 15);                  // tell the VGA board we are setting the low cursor byte.
