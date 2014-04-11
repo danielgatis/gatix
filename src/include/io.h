@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _commons_io_h
-#define _commons_io_h
+#ifndef _io_h
+#define _io_h
 
 #include "types.h"
 
