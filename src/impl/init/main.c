@@ -20,6 +20,9 @@
 #include "monitor/monitor.h"
 #include "tables/gdt.h"
 #include "tables/idt.h"
+#include "tables/isr.h"
+#include "tables/irq.h"
+#include "pit/pit.h"
 
 static void k_print_gpl()
 {
@@ -45,11 +48,14 @@ int k_main(multiboot_info_t *mboot_ptr)
   k_init_gdt();
   k_init_idt();
 
-  k_init_video();
+  k_init_isr();
+  k_init_irq();
+
+  k_init_timer();
+
+  k_init_monitor();
 
   k_print_gpl();
-
-  __asm__ volatile("int $0x4");
 
   return 0;
 }

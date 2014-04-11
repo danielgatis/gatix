@@ -24,7 +24,7 @@
 void k_init_gdt();
 
 // lets us access our ASM functions from our C code.
-extern void k_gdt_flush(uint32_t);
+extern void k_gdt_flush();
 
 // this structure contains the value of one GDT entry.
 struct gdt_entry_struct

@@ -24,7 +24,7 @@
 void k_init_idt();
 
 // lets us access our ASM functions from our C code.
-extern void k_idt_flush(uint32_t);
+extern void k_idt_flush();
 
 // a struct describing an interrupt gate.
 struct idt_entry_struct
@@ -47,5 +47,7 @@ struct idt_ptr_struct
 } __attribute__((packed));
 
 typedef struct idt_ptr_struct idt_ptr_t;
+
+void k_idt_set_entry(uint8_t i, uint32_t base, uint16_t sel, uint8_t flags);
 
 #endif

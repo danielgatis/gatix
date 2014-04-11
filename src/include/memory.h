@@ -19,6 +19,8 @@
 #ifndef _memory_h
 #define _memory_h
 
+#include "types.h"
+
 void k_memset(uint8_t *target, uint8_t value, uint32_t length);
 
 #endif

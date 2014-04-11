@@ -16,27 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _types_h
-#define _types_h
+#include "io.h"
+#include "types.h"
+#include "pit/pit.h"
+#include "tables/irq.h"
 
-typedef unsigned long long   uint64_t;
-typedef          long long   int64_t;
+uint32_t timer_ticks = 0;
 
-typedef unsigned int   uint32_t;
-typedef          int   int32_t;
+void k_timer_phase(uint16_t hz) {
+  uint16_t divisor = 1193180 / hz;
+  k_outb(0x43, 0x36);
+  k_outb(0x40, divisor & 0xFF);
+  k_outb(0x40, divisor >> 8);
+}
 
-typedef unsigned short uint16_t;
-typedef          short int16_t;
+void k_timer_handler(registers_t *registers) {
+  timer_ticks++;
+}
 
-typedef unsigned char  uint8_t;
-typedef          char  int8_t;
-
-typedef struct registers
-{
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
-
-#endif
+void k_init_timer() {
+  k_irq_set_handler(0, k_timer_handler);
+}

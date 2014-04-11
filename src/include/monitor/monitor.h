@@ -21,7 +21,7 @@
 
 #include "types.h"
 
-void k_init_video();
+void k_init_monitor();
 
 void k_set_text_color(uint8_t foreground_color, uint8_t background_color);
 
@@ -29,9 +29,9 @@ void k_monitor_puts_c(char c);
 
 void k_monitor_puts_s(char *c);
 
-void k_monitor_write_dec(uint32_t n);
+void k_monitor_puts_dec(uint32_t n);
 
-void k_monitor_write_hex(uint32_t n);
+void k_monitor_puts_hex(uint32_t n);
 
 void k_monitor_clr();
 

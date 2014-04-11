@@ -16,27 +16,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _types_h
-#define _types_h
+#ifndef _tables_irq_h_
+#define _tables_irq_h_
 
-typedef unsigned long long   uint64_t;
-typedef          long long   int64_t;
+#include "types.h"
 
-typedef unsigned int   uint32_t;
-typedef          int   int32_t;
+extern void k_irq0();
+extern void k_irq1();
+extern void k_irq2();
+extern void k_irq3();
+extern void k_irq4();
+extern void k_irq5();
+extern void k_irq6();
+extern void k_irq7();
+extern void k_irq8();
+extern void k_irq9();
+extern void k_irq10();
+extern void k_irq11();
+extern void k_irq12();
+extern void k_irq13();
+extern void k_irq14();
+extern void k_irq15();
 
-typedef unsigned short uint16_t;
-typedef          short int16_t;
+void k_irq_set_handler(int16_t i, void (*handler)(registers_t *registers));
 
-typedef unsigned char  uint8_t;
-typedef          char  int8_t;
+void k_irq_unset_handler(int16_t i);
 
-typedef struct registers
-{
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+void k_irq_remap();
+
+void k_irq_handler(registers_t registers);
+
+void k_init_irq();
 
 #endif

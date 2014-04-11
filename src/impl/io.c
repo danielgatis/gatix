@@ -21,19 +21,19 @@
 
 void k_outb(uint16_t port, uint8_t value)
 {
-  __asm__ volatile ("outb %1, %0" : : "dN" (port), "a" (value));
+  __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (value));
 }
 
 uint8_t k_inb(uint16_t port)
 {
   uint8_t ret;
-  __asm__ volatile("inb %1, %0" : "=a" (ret) : "dN" (port));
+  __asm__ __volatile__ ("inb %1, %0" : "=a" (ret) : "dN" (port));
   return ret;
 }
 
 uint16_t k_inw(uint16_t port)
 {
   uint16_t ret;
-  __asm__ volatile ("inw %1, %0" : "=a" (ret) : "dN" (port));
+  __asm__ __volatile__ ("inw %1, %0" : "=a" (ret) : "dN" (port));
   return ret;
 }

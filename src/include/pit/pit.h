@@ -16,27 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _types_h
-#define _types_h
+#ifndef _pit_pit_h_
+#define _pit_pit_h_
 
-typedef unsigned long long   uint64_t;
-typedef          long long   int64_t;
+#include "types.h"
 
-typedef unsigned int   uint32_t;
-typedef          int   int32_t;
+void k_timer_phase(uint16_t hz);
 
-typedef unsigned short uint16_t;
-typedef          short int16_t;
+void k_timer_handler(registers_t *registers);
 
-typedef unsigned char  uint8_t;
-typedef          char  int8_t;
-
-typedef struct registers
-{
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+void k_init_timer();
 
 #endif

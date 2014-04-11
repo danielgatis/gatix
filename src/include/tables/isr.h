@@ -21,12 +21,41 @@
 
 #include "types.h"
 
-typedef struct registers
-{
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+extern void k_isr0();
+extern void k_isr1();
+extern void k_isr2();
+extern void k_isr3();
+extern void k_isr4();
+extern void k_isr5();
+extern void k_isr6();
+extern void k_isr7();
+extern void k_isr8();
+extern void k_isr9();
+extern void k_isr10();
+extern void k_isr11();
+extern void k_isr12();
+extern void k_isr13();
+extern void k_isr14();
+extern void k_isr15();
+extern void k_isr16();
+extern void k_isr17();
+extern void k_isr18();
+extern void k_isr19();
+extern void k_isr20();
+extern void k_isr21();
+extern void k_isr22();
+extern void k_isr23();
+extern void k_isr24();
+extern void k_isr25();
+extern void k_isr26();
+extern void k_isr27();
+extern void k_isr28();
+extern void k_isr29();
+extern void k_isr30();
+extern void k_isr31();
+
+void k_init_isr();
+
+void k_isr_handler(registers_t registers);
 
 #endif

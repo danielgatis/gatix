@@ -46,5 +46,5 @@ void k_init_gdt()
   k_gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); // user mode code segment
   k_gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); // user mode data segment
 
-  k_gdt_flush((uint32_t)&gdt_ptr);
+  k_gdt_flush();
 }
