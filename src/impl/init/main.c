@@ -40,7 +40,8 @@ static void k_print_gpl()
 
 int k_main(multiboot_info_t *mboot_ptr)
 {
-  k_monitor_clr();
+  k_init_video();
+
   k_print_gpl();
   return 0;
 }

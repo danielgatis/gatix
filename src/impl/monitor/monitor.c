@@ -20,27 +20,42 @@
 #include "io.h"
 #include "monitor/monitor.h"
 
-// the VGA framebuffer starts at 0xB8000.
-uint16_t *video_memory = (uint16_t *)0xB8000;
+// the VGA framebuffer.
+uint16_t *video_memory = 0;
 
 // stores the cursor position.
 uint8_t cursor_x = 0;
 uint8_t cursor_y = 0;
 
 // colors
-uint8_t background_color = 0;   //black
-uint8_t foreground_color = 15;  //white
+uint16_t attr_byte = 0;
 
 // chars
 uint8_t SPACE = 0x20;
 uint8_t TAB = 0x09;
 uint8_t BACKSPACE = 0x08;
 
-// returns a char with foreground and background color
-static uint16_t k_char(uint16_t c, uint8_t foreground_color, uint8_t background_color)
+void k_init_video() {
+  video_memory = (uint16_t *)0xB8000;
+
+  k_monitor_clr();
+
+  // foreground white and background black
+  k_set_text_color(15, 0);
+}
+
+//
+void k_set_text_color(uint8_t foreground_color, uint8_t background_color)
 {
-  uint8_t attributeByte = (background_color << 4) | (foreground_color & 0x0F);
-  return c | (attributeByte << 8);
+  // top 4 bytes are the background.
+  // bottom 4 bytes are the foreground color.
+  attr_byte = (background_color << 4) | (foreground_color & 0x0F);
+}
+
+// returns a char with foreground and background color
+static uint16_t k_char(uint16_t c)
+{
+  return c | (attr_byte << 8);
 }
 
 // updates the hardware cursor.
@@ -78,7 +93,7 @@ static void k_scroll()
     // do this by writing 80 spaces to it.
     for (int i = 24 * 80; i < 25 * 80; i++)
     {
-      video_memory[i] = k_char(SPACE, foreground_color, background_color);
+      video_memory[i] = k_char(SPACE);
     }
 
     // the cursor should now be on the last line.
@@ -118,7 +133,7 @@ void k_monitor_puts_c(char c)
   else if (c >= SPACE)
   {
     uint16_t *location = video_memory + (cursor_y * 80 + cursor_x);
-    *location = k_char(c, foreground_color, background_color);
+    *location = k_char(c);
     cursor_x++;
   }
 
@@ -141,7 +156,7 @@ void k_monitor_clr()
 {
   for (int i = 0; i < 80 * 25; i++)
   {
-    video_memory[i] = k_char(SPACE, foreground_color, background_color);
+    video_memory[i] = k_char(SPACE);
   }
 
   // move the hardware cursor back to the start.

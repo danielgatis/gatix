@@ -19,6 +19,12 @@
 #ifndef _monitor_h_
 #define _monitor_h_
 
+#include "types.h"
+
+void k_init_video();
+
+void k_set_text_color(uint8_t foreground_color, uint8_t background_color);
+
 void k_monitor_puts_c(char c);
 
 void k_monitor_puts_s(char *c);
