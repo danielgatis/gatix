@@ -1,5 +1,5 @@
 /*
- * MyOs - my os
+ * Gatix
  * Copyright (C) 2014  Daniel Gatis Carrazzoni
  *
  * This program is free software: you can redistribute it and/or modify

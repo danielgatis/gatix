@@ -1,6 +1,6 @@
 INCLUDE_DIRECTORIES ("include")
 
-FILE (GLOB_RECURSE myos_test_C_SOURCES "*.c")
-FILE (GLOB_RECURSE myos_test_ASM_SOURCES "*.asm")
+FILE (GLOB_RECURSE gatix_test_C_SOURCES "*.c")
+FILE (GLOB_RECURSE gatix_test_ASM_SOURCES "*.asm")
 
-ADD_EXECUTABLE (myos_test.bin ${myos_test_C_SOURCES} ${myos_test_ASM_SOURCES})
+ADD_EXECUTABLE (gatix_test.bin ${gatix_test_C_SOURCES} ${gatix_test_ASM_SOURCES})

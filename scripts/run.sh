@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MyOs - my os
+# Gatix
 # Copyright (C) 2014  Daniel Gatis Carrazzoni
 #
 # This program is free software: you can redistribute it and/or modify
@@ -16,4 +16,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-qemu-system-i386 -cdrom build/iso/myos.iso -monitor stdio
+qemu-system-i386 -cdrom build/iso/gatix.iso -monitor stdio

@@ -1,5 +1,5 @@
 /*
- * MyOs - my os
+ * Gatix
  * Copyright (C) 2014  Daniel Gatis Carrazzoni
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 
 static void k_print_gpl()
 {
-  k_monitor_puts_s("MyOs - my os");
+  k_monitor_puts_s("Gatix");
   k_monitor_puts_s("Copyright (C) 2014  Daniel Gatis Carrazzoni");
   k_monitor_puts_s("");
   k_monitor_puts_s("This program is free software: you can redistribute it and/or modify");
