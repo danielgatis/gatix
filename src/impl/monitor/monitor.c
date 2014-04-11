@@ -44,7 +44,7 @@ void k_init_video() {
   k_set_text_color(15, 0);
 }
 
-//
+// set foreground and background color.
 void k_set_text_color(uint8_t foreground_color, uint8_t background_color)
 {
   // top 4 bytes are the background.
