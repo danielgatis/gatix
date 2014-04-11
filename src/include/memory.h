@@ -16,23 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _monitor_h_
-#define _monitor_h_
+#ifndef _memory_h
+#define _memory_h
 
-#include "types.h"
-
-void k_init_video();
-
-void k_set_text_color(uint8_t foreground_color, uint8_t background_color);
-
-void k_monitor_puts_c(char c);
-
-void k_monitor_puts_s(char *c);
-
-void k_monitor_write_dec(uint32_t n);
-
-void k_monitor_write_hex(uint32_t n);
-
-void k_monitor_clr();
+void k_memset(uint8_t *target, uint8_t value, uint32_t length);
 
 #endif

@@ -16,23 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _monitor_h_
-#define _monitor_h_
-
 #include "types.h"
+#include "monitor/monitor.h"
+#include "tables/isr.h"
 
-void k_init_video();
-
-void k_set_text_color(uint8_t foreground_color, uint8_t background_color);
-
-void k_monitor_puts_c(char c);
-
-void k_monitor_puts_s(char *c);
-
-void k_monitor_write_dec(uint32_t n);
-
-void k_monitor_write_hex(uint32_t n);
-
-void k_monitor_clr();
-
-#endif
+// this gets called from our ASM interrupt handler stub.
+void k_isr_handler(registers_t regs)
+{
+  k_monitor_puts_s("recieved interrupt: ");
+  k_monitor_write_dec(regs.int_no);
+}

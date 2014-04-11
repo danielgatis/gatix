@@ -16,23 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _monitor_h_
-#define _monitor_h_
+#ifndef _tables_isr_h_
+#define _tables_isr_h_
 
 #include "types.h"
 
-void k_init_video();
-
-void k_set_text_color(uint8_t foreground_color, uint8_t background_color);
-
-void k_monitor_puts_c(char c);
-
-void k_monitor_puts_s(char *c);
-
-void k_monitor_write_dec(uint32_t n);
-
-void k_monitor_write_hex(uint32_t n);
-
-void k_monitor_clr();
+typedef struct registers
+{
+  uint32_t ds;
+  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
+  uint32_t int_no, err_code;
+  uint32_t eip, cs, eflags, useresp, ss;
+} registers_t;
 
 #endif

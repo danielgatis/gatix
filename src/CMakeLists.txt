@@ -1,4 +1,4 @@
-SET (CMAKE_C_LINK_FLAGS "-m elf_i386 -T${CMAKE_CURRENT_LIST_DIR}/link.ld")
+SET (CMAKE_C_LINK_FLAGS "-m elf_i386 -T${CMAKE_CURRENT_LIST_DIR}/arch/i386/link.ld")
 SET (CMAKE_C_FLAGS "-m32 -ffreestanding -nostdlib -nostdinc -fno-builtin -fno-stack-protector -std=c99")
 SET (CMAKE_C_LINK_EXECUTABLE "/usr/bin/ld <CMAKE_C_LINK_FLAGS> <OBJECTS> -o <TARGET>")
 SET (CMAKE_ASM_NASM_OBJECT_FORMAT "elf")

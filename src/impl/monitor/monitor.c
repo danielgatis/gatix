@@ -101,6 +101,20 @@ static void k_scroll()
   }
 }
 
+// clears the screen, by copying lots of spaces to the framebuffer.
+void k_monitor_clr()
+{
+  for (int i = 0; i < 80 * 25; i++)
+  {
+    video_memory[i] = k_char(SPACE);
+  }
+
+  // move the hardware cursor back to the start.
+  cursor_x = 0;
+  cursor_y = 0;
+  k_move_cursor();
+}
+
 // writes a single char.
 void k_monitor_puts_c(char c)
 {
@@ -151,20 +165,6 @@ void k_monitor_puts_c(char c)
   k_move_cursor();
 }
 
-// clears the screen, by copying lots of spaces to the framebuffer.
-void k_monitor_clr()
-{
-  for (int i = 0; i < 80 * 25; i++)
-  {
-    video_memory[i] = k_char(SPACE);
-  }
-
-  // move the hardware cursor back to the start.
-  cursor_x = 0;
-  cursor_y = 0;
-  k_move_cursor();
-}
-
 // writes a null-terminated string.
 void k_monitor_puts_s(char *c)
 {
@@ -174,4 +174,70 @@ void k_monitor_puts_s(char *c)
     c++;
   }
   k_monitor_puts_c('\n');
+}
+
+void k_monitor_write_hex(uint32_t n)
+{
+  int32_t tmp = 0;
+  char noZeroes = 1;
+
+  for (int i = 28; i > 0; i -= 4)
+  {
+    tmp = (n >> i) & 0xF;
+    if (tmp == 0 && noZeroes != 0)
+    {
+      continue;
+    }
+
+    if (tmp >= 0xA)
+    {
+      noZeroes = 0;
+      k_monitor_puts_s("0x" + tmp - 0xA + 'a');
+    }
+    else
+    {
+      noZeroes = 0;
+      k_monitor_puts_s("0x" + tmp + '0');
+    }
+  }
+
+  tmp = n & 0xF;
+  if (tmp >= 0xA)
+  {
+    k_monitor_puts_s("0x" + tmp - 0xA + 'a');
+  }
+  else
+  {
+    k_monitor_puts_s("0x" + tmp +'0');
+  }
+}
+
+void k_monitor_write_dec(uint32_t n)
+{
+  if (n == 0)
+  {
+    k_monitor_puts_c('0');
+    return;
+  }
+
+  int32_t acc = n;
+  char c[32];
+  int i = 0;
+  while (acc > 0)
+  {
+    c[i] = '0' + acc%10;
+    acc /= 10;
+    i++;
+  }
+  c[i] = 0;
+
+  char c2[32];
+  c2[i--] = 0;
+  int j = 0;
+
+  while(i >= 0)
+  {
+    c2[i--] = c[j++];
+  }
+  k_monitor_puts_s(c2);
 }
