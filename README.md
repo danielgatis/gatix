@@ -9,14 +9,14 @@ Clone a copy of the main git repo by running:
 git clone git://github.com/danielgatis/myos.git
 ```
 
-Enter the build directory and run the build script:
+On root directory run:
 ```bash
 cd build && camke .. && make
 ```
 
 How can I run?
 ---------------------
-On root directory run the script:
+On root directory run:
 ```bash
 sh scripts/run.sh
 ```
