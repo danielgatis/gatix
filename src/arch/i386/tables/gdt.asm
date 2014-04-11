@@ -1,3 +1,4 @@
+[BITS 32]
 [GLOBAL k_gdt_flush]    ; allows the C code to call gdt_flush().
 
 k_gdt_flush:

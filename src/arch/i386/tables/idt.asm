@@ -1,3 +1,4 @@
+[BITS 32]
 [GLOBAL k_idt_flush]  ; allows the C code to call idt_flush().
 
 k_idt_flush:

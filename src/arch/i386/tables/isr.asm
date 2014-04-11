@@ -1,3 +1,4 @@
+[BITS 32]
 [EXTERN k_isr_handler]
 
 %macro ISR_NOERRCODE 1    ; define a macro, taking one parameter
