@@ -20,9 +20,56 @@
 #include "monitor/monitor.h"
 #include "tables/isr.h"
 
-// this gets called from our ASM interrupt handler stub.
-void k_isr_handler(registers_t regs)
+unsigned char *exception_messages[] =
 {
-  k_monitor_puts_s("recieved interrupt: ");
-  k_monitor_write_dec(regs.int_no);
+  "Division By Zero",
+  "Debug",
+  "Non Maskable Interrupt",
+  "Breakpoint",
+  "Into Detected Overflow",
+  "Out of Bounds",
+  "Invalid Opcode",
+  "No Coprocessor",
+
+  "Double Fault",
+  "Coprocessor Segment Overrun",
+  "Bad TSS",
+  "Segment Not Present",
+  "Stack Fault",
+  "General Protection Fault",
+  "Page Fault",
+  "Unknown Interrupt",
+
+  "Coprocessor Fault",
+  "Alignment Check",
+  "Machine Check",
+  "Reserved",
+  "Reserved",
+  "Reserved",
+  "Reserved",
+  "Reserved",
+
+  "Reserved",
+  "Reserved",
+  "Reserved",
+  "Reserved",
+  "Reserved",
+  "Reserved",
+  "Reserved",
+  "Reserved"
+};
+
+// this gets called from our ASM interrupt handler stub.
+void k_isr_handler(registers_t registers)
+{
+  // is this a fault whose number is from 0 to 31?
+  if (registers.int_no < 32)
+  {
+    // display the description for the Exception that occurred
+    k_monitor_puts_s(exception_messages[registers.int_no]);
+    k_monitor_puts_s("Exception. System Halted!");
+
+    // and simply halt the system using an infinite loop
+    for (;;);
+  }
 }

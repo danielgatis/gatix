@@ -49,7 +49,6 @@ int k_main(multiboot_info_t *mboot_ptr)
 
   k_print_gpl();
 
-  __asm__ volatile("int $0x3");
   __asm__ volatile("int $0x4");
 
   return 0;

@@ -23,7 +23,7 @@
 idt_entry_t idt_entries[256];
 idt_ptr_t idt_ptr;
 
-// These extern directives let us access the addresses of our ASM k_ISR handlers.
+// These extern directives let us access the addresses of our ASM ISR handlers.
 extern void k_isr0();
 extern void k_isr1();
 extern void k_isr2();
