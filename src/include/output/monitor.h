@@ -16,32 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "load/multiboot.h"
-#include "output/monitor.h"
-#include "desc/gdt.h"
-#include "desc/idt.h"
-#include "int/isr.h"
-#include "int/irq.h"
-#include "sys/pit.h"
+#ifndef _output_monitor_h_
+#define _output_monitor_h_
 
-int k_main(multiboot_info_t *mboot_ptr)
-{
-  k_init_monitor();
+#include "std/types.h"
 
-  k_monitor_puts_s("GDT");
-  k_init_gdt();
+void k_init_monitor();
 
-  k_monitor_puts_s("IDT");
-  k_init_idt();
+void k_set_text_color(uint8_t foreground_color, uint8_t background_color);
 
-  k_monitor_puts_s("ISR");
-  k_init_isr();
+void k_monitor_puts_c(char c);
 
-  k_monitor_puts_s("IRQ");
-  k_init_irq();
+void k_monitor_puts_s(char *c);
 
-  k_monitor_puts_s("PIT");
-  k_init_timer();
+void k_monitor_puts_dec(uint32_t n);
 
-  return 0;
-}
+void k_monitor_puts_hex(uint32_t n);
+
+void k_monitor_clr();
+
+#endif

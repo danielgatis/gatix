@@ -16,32 +16,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "load/multiboot.h"
-#include "output/monitor.h"
-#include "desc/gdt.h"
-#include "desc/idt.h"
-#include "int/isr.h"
-#include "int/irq.h"
-#include "sys/pit.h"
+#ifndef _int_irq_h_
+#define _int_irq_h_
 
-int k_main(multiboot_info_t *mboot_ptr)
-{
-  k_init_monitor();
+#include "std/types.h"
 
-  k_monitor_puts_s("GDT");
-  k_init_gdt();
+extern void k_irq0();
+extern void k_irq1();
+extern void k_irq2();
+extern void k_irq3();
+extern void k_irq4();
+extern void k_irq5();
+extern void k_irq6();
+extern void k_irq7();
+extern void k_irq8();
+extern void k_irq9();
+extern void k_irq10();
+extern void k_irq11();
+extern void k_irq12();
+extern void k_irq13();
+extern void k_irq14();
+extern void k_irq15();
 
-  k_monitor_puts_s("IDT");
-  k_init_idt();
+typedef void (*k_irq_seted_handler)(registers_t *registers);
 
-  k_monitor_puts_s("ISR");
-  k_init_isr();
+void k_irq_set_handler(uint8_t i, k_irq_seted_handler);
 
-  k_monitor_puts_s("IRQ");
-  k_init_irq();
+void k_irq_unset_handler(uint8_t i);
 
-  k_monitor_puts_s("PIT");
-  k_init_timer();
+void k_irq_remap();
 
-  return 0;
-}
+void k_irq_handler(registers_t *registers);
+
+void k_init_irq();
+
+#endif

@@ -16,32 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "load/multiboot.h"
-#include "output/monitor.h"
-#include "desc/gdt.h"
-#include "desc/idt.h"
-#include "int/isr.h"
-#include "int/irq.h"
-#include "sys/pit.h"
+#include "std/memory.h"
 
-int k_main(multiboot_info_t *mboot_ptr)
-{
-  k_init_monitor();
-
-  k_monitor_puts_s("GDT");
-  k_init_gdt();
-
-  k_monitor_puts_s("IDT");
-  k_init_idt();
-
-  k_monitor_puts_s("ISR");
-  k_init_isr();
-
-  k_monitor_puts_s("IRQ");
-  k_init_irq();
-
-  k_monitor_puts_s("PIT");
-  k_init_timer();
-
-  return 0;
+void k_memset(uint8_t *dest, uint8_t val, uint32_t count) {
+  for (int i = 0; i < count; i++) {
+    dest[i] = val;
+  }
 }

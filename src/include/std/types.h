@@ -16,32 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "load/multiboot.h"
-#include "output/monitor.h"
-#include "desc/gdt.h"
-#include "desc/idt.h"
-#include "int/isr.h"
-#include "int/irq.h"
-#include "sys/pit.h"
+#ifndef _std_types_h
+#define _std_types_h
 
-int k_main(multiboot_info_t *mboot_ptr)
+typedef unsigned long long   uint64_t;
+typedef          long long   int64_t;
+
+typedef unsigned int   uint32_t;
+typedef          int   int32_t;
+
+typedef unsigned short uint16_t;
+typedef          short int16_t;
+
+typedef unsigned char  uint8_t;
+typedef          char  int8_t;
+
+typedef struct registers
 {
-  k_init_monitor();
+  uint32_t ds;
+  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
+  uint32_t int_no, err_code;
+  uint32_t eip, cs, eflags, useresp, ss;
+} registers_t;
 
-  k_monitor_puts_s("GDT");
-  k_init_gdt();
-
-  k_monitor_puts_s("IDT");
-  k_init_idt();
-
-  k_monitor_puts_s("ISR");
-  k_init_isr();
-
-  k_monitor_puts_s("IRQ");
-  k_init_irq();
-
-  k_monitor_puts_s("PIT");
-  k_init_timer();
-
-  return 0;
-}
+#endif

@@ -16,32 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "load/multiboot.h"
-#include "output/monitor.h"
-#include "desc/gdt.h"
-#include "desc/idt.h"
-#include "int/isr.h"
-#include "int/irq.h"
-#include "sys/pit.h"
+#include "std/io.h"
 
-int k_main(multiboot_info_t *mboot_ptr)
+void k_outb(uint16_t port, uint8_t value)
 {
-  k_init_monitor();
+  __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (value));
+}
 
-  k_monitor_puts_s("GDT");
-  k_init_gdt();
+uint8_t k_inb(uint16_t port)
+{
+  uint8_t ret;
+  __asm__ __volatile__ ("inb %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
+}
 
-  k_monitor_puts_s("IDT");
-  k_init_idt();
-
-  k_monitor_puts_s("ISR");
-  k_init_isr();
-
-  k_monitor_puts_s("IRQ");
-  k_init_irq();
-
-  k_monitor_puts_s("PIT");
-  k_init_timer();
-
-  return 0;
+uint16_t k_inw(uint16_t port)
+{
+  uint16_t ret;
+  __asm__ __volatile__ ("inw %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
 }
