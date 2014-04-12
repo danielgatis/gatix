@@ -5,7 +5,7 @@ Gatix is a basic and small UNIX-like operating system.
 
 How can I build?
 ---------------------
-Set up inverioment on debian-like:
+Set up environment on debian-like:
 ```bash
 sudo apt-get install build-essential nasm git cmake xorriso qemu
 ```
