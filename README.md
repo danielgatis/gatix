@@ -2,21 +2,27 @@ What is Gatix?
 =================
 Gatix is a basic and small UNIX-like operating system.
 
+
 How can I build?
 ---------------------
-Clone a copy of the main git repo by running:
+Set up inverioment on debian-like:
 ```bash
-git clone git://github.com/danielgatis/myos.git
+sudo apt-get install build-essential nasm git cmake xorriso qemu
 ```
 
-On root directory run:
+Clone a copy of the main git repo by running:
+```bash
+git clone git://github.com/danielgatis/gatix.git
+```
+
+On **root directory** run:
 ```bash
 cd build && camke .. && make
 ```
 
 How can I run?
 ---------------------
-On root directory run:
+On **root directory** run:
 ```bash
 sh scripts/run.sh
 ```
