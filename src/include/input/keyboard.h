@@ -16,15 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _sys_pit_h_
-#define _sys_pit_h_
+#ifndef _input_keyboard_h_
+#define _input_keyboard_h_
 
 #include "std/types.h"
 
-void k_timer_phase(uint32_t hz);
+void k_keyboard_handler(registers_t registers);
 
-void k_timer_handler(registers_t registers);
-
-void k_init_timer();
+void k_init_keyboard();
 
 #endif
+

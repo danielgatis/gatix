@@ -16,29 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-ENTRY(start)
-gatix = 0x00100000;
-SECTIONS {
+ENTRY(_start)
+SECTIONS
+{
+  . = 1M;
 
-    .text gatix : AT(gatix) {
-        code = .;
-        *(.text)
-        *(.rodata)
-        . = ALIGN(4096);
-    }
+  .text BLOCK(4K) : ALIGN(4K)
+  {
+    *(.multiboot)
+    *(.text)
+  }
 
-    .data : AT(gatix + (data - code)) {
-        data = .;
-        *(.data)
-        . = ALIGN(4096);
-    }
+  .rodata BLOCK(4K) : ALIGN(4K)
+  {
+    *(.rodata)
+  }
 
-    .bss : AT(gatix + (bss - code)) {
-        bss = .;
-        *(.bss)
-        . = ALIGN(4096);
-    }
+  .data BLOCK(4K) : ALIGN(4K)
+  {
+    *(.data)
+  }
 
-    end = .;
+  .bss BLOCK(4K) : ALIGN(4K)
+  {
+    *(COMMON)
+    *(.bss)
+    *(.bootstrap_stack)
+  }
 }
-

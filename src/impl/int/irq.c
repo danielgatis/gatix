@@ -25,15 +25,18 @@ k_irq_seted_handler handlers[16] = {
   0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void k_irq_set_handler(uint8_t i, k_irq_seted_handler handler) {
+void k_irq_set_handler(uint8_t i, k_irq_seted_handler handler)
+{
   handlers[i] = handler;
 }
 
-void k_irq_unset_handler(uint8_t i) {
+void k_irq_unset_handler(uint8_t i)
+{
   handlers[i] = 0;
 }
 
-void k_irq_remap() {
+void k_irq_remap()
+{
   k_outb(0x20, 0x11);
   k_outb(0xA0, 0x11);
   k_outb(0x21, 0x20);
@@ -46,37 +49,39 @@ void k_irq_remap() {
   k_outb(0xA1, 0x0);
 }
 
-void k_init_irq() {
+void k_init_irq()
+{
   k_irq_remap();
 
-  k_idt_set_entry(32, (uint32_t)k_irq0 , 0x08, 0x8E);
-  // k_idt_set_entry(33, (uint32_t)k_irq1 , 0x08, 0x8E);
-  // k_idt_set_entry(34, (uint32_t)k_irq2 , 0x08, 0x8E);
-  // k_idt_set_entry(35, (uint32_t)k_irq3 , 0x08, 0x8E);
-  // k_idt_set_entry(36, (uint32_t)k_irq4 , 0x08, 0x8E);
-  // k_idt_set_entry(37, (uint32_t)k_irq5 , 0x08, 0x8E);
-  // k_idt_set_entry(38, (uint32_t)k_irq6 , 0x08, 0x8E);
-  // k_idt_set_entry(39, (uint32_t)k_irq7 , 0x08, 0x8E);
-  // k_idt_set_entry(40, (uint32_t)k_irq8 , 0x08, 0x8E);
-  // k_idt_set_entry(41, (uint32_t)k_irq9 , 0x08, 0x8E);
-  // k_idt_set_entry(42, (uint32_t)k_irq10, 0x08, 0x8E);
-  // k_idt_set_entry(43, (uint32_t)k_irq11, 0x08, 0x8E);
-  // k_idt_set_entry(44, (uint32_t)k_irq12, 0x08, 0x8E);
-  // k_idt_set_entry(45, (uint32_t)k_irq13, 0x08, 0x8E);
-  // k_idt_set_entry(46, (uint32_t)k_irq14, 0x08, 0x8E);
-  // k_idt_set_entry(47, (uint32_t)k_irq15, 0x08, 0x8E);
+  k_idt_add_entry(32, (uint32_t)k_irq0 , 0x08, 0x8E);
+  k_idt_add_entry(33, (uint32_t)k_irq1 , 0x08, 0x8E);
+  k_idt_add_entry(34, (uint32_t)k_irq2 , 0x08, 0x8E);
+  k_idt_add_entry(35, (uint32_t)k_irq3 , 0x08, 0x8E);
+  k_idt_add_entry(36, (uint32_t)k_irq4 , 0x08, 0x8E);
+  k_idt_add_entry(37, (uint32_t)k_irq5 , 0x08, 0x8E);
+  k_idt_add_entry(38, (uint32_t)k_irq6 , 0x08, 0x8E);
+  k_idt_add_entry(39, (uint32_t)k_irq7 , 0x08, 0x8E);
+  k_idt_add_entry(40, (uint32_t)k_irq8 , 0x08, 0x8E);
+  k_idt_add_entry(41, (uint32_t)k_irq9 , 0x08, 0x8E);
+  k_idt_add_entry(42, (uint32_t)k_irq10, 0x08, 0x8E);
+  k_idt_add_entry(43, (uint32_t)k_irq11, 0x08, 0x8E);
+  k_idt_add_entry(44, (uint32_t)k_irq12, 0x08, 0x8E);
+  k_idt_add_entry(45, (uint32_t)k_irq13, 0x08, 0x8E);
+  k_idt_add_entry(46, (uint32_t)k_irq14, 0x08, 0x8E);
+  k_idt_add_entry(47, (uint32_t)k_irq15, 0x08, 0x8E);
 }
 
-// this gets called from our ASM interrupt handler stub.
-void k_irq_handler(registers_t *registers)
+void k_irq_handler(registers_t registers)
 {
-  k_irq_seted_handler handler = handlers[registers->int_no - 32];
+  k_irq_seted_handler handler = handlers[registers.int_no - 32];
 
-  if (handler) {
+  if (handler)
+  {
     handler(registers);
   }
 
-  if (registers->int_no >= 40) {
+  if (registers.int_no >= 40)
+  {
     k_outb(0xA0, 0x20);
   }
 

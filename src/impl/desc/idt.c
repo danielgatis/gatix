@@ -18,11 +18,12 @@
 
 #include "desc/idt.h"
 #include "std/memory.h"
+#include "output/monitor.h"
 
 idt_entry_t idt[256];
 idt_ptr_t idt_ptr;
 
-void k_idt_set_entry(uint8_t i, uint32_t base, uint16_t sel, uint8_t flags)
+void k_idt_add_entry(uint8_t i, uint32_t base, uint16_t sel, uint8_t flags)
 {
   idt[i].base_lo = base & 0xFFFF;
   idt[i].base_hi = (base >> 16) & 0xFFFF;
@@ -37,5 +38,5 @@ void k_init_idt()
   idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;
   idt_ptr.base = (uint32_t)&idt;
   k_memset((uint8_t*)&idt, 0, sizeof(idt_entry_t) * 256);
-  k_idt_flush();
+  k_idt_flush(&idt_ptr);
 }

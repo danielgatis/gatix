@@ -56,6 +56,6 @@ extern void k_isr31();
 
 void k_init_isr();
 
-void k_isr_handler(registers_t *registers);
+void k_isr_handler(registers_t registers);
 
 #endif

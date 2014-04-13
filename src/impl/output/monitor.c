@@ -34,7 +34,8 @@ uint8_t SPACE = 0x20;
 uint8_t TAB = 0x09;
 uint8_t BACKSPACE = 0x08;
 
-void k_init_monitor() {
+void k_init_monitor()
+{
   video_memory = (uint16_t *)0xB8000;
 
   k_monitor_clr();
@@ -172,7 +173,6 @@ void k_monitor_puts_s(char *c)
     k_monitor_puts_c(*c);
     c++;
   }
-  k_monitor_puts_c('\n');
 }
 
 void k_monitor_puts_hex(uint32_t n)

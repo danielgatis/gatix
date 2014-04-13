@@ -18,6 +18,7 @@
 
 #include "load/multiboot.h"
 #include "output/monitor.h"
+#include "input/keyboard.h"
 #include "desc/gdt.h"
 #include "desc/idt.h"
 #include "int/isr.h"
@@ -26,22 +27,22 @@
 
 int k_main(multiboot_info_t *mboot_ptr)
 {
-  k_init_monitor();
-
-  k_monitor_puts_s("GDT");
   k_init_gdt();
-
-  k_monitor_puts_s("IDT");
   k_init_idt();
 
-  k_monitor_puts_s("ISR");
-  k_init_isr();
+  k_init_monitor();
 
-  k_monitor_puts_s("IRQ");
+  k_init_isr();
   k_init_irq();
 
-  k_monitor_puts_s("PIT");
+  __asm__ __volatile__("sti");
+
+  k_monitor_puts_s("PIT\n");
   k_init_timer();
 
+  k_monitor_puts_s("KBD\n");
+  k_init_keyboard();
+
+  for (;;) {};
   return 0;
 }

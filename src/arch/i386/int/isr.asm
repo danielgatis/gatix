@@ -53,29 +53,25 @@ ISR_NOERRCODE 31
 extern k_isr_handler
 k_isr_stub:
   pusha
-  push ds
-  push es
-  push fs
-  push gs
+
+  mov ax, ds
+  push eax
 
   mov ax, 0x10
   mov ds, ax
   mov es, ax
   mov fs, ax
   mov gs, ax
-  mov eax, esp
 
-  push eax
-  mov eax, k_isr_handler
-
-  call eax
+  call k_isr_handler
 
   pop eax
-  pop gs
-  pop fs
-  pop es
-  pop ds
-  popa
+  mov ds, bx
+  mov es, bx
+  mov fs, bx
+  mov gs, bx
 
+  popa
   add esp, 8
+  sti
   iret

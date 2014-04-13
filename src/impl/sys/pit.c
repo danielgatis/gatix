@@ -22,17 +22,25 @@
 
 uint32_t timer_ticks = 0;
 
-void k_timer_phase(uint16_t hz) {
-  uint16_t divisor = 1193180 / hz;
+void k_timer_phase(uint32_t frequency)
+{
+  uint32_t divisor = 1193180 / frequency;
   k_outb(0x43, 0x36);
-  k_outb(0x40, divisor & 0xFF);
-  k_outb(0x40, divisor >> 8);
+
+  uint8_t l = (uint8_t)(divisor & 0xFF);
+  uint8_t h = (uint8_t)((divisor>>8) & 0xFF);
+
+  k_outb(0x40, l);
+  k_outb(0x40, h);
 }
 
-void k_timer_handler(registers_t *registers) {
+void k_timer_handler(registers_t registers)
+{
   timer_ticks++;
 }
 
-void k_init_timer() {
+void k_init_timer()
+{
+  k_timer_phase(50);
   k_irq_set_handler(0, k_timer_handler);
 }

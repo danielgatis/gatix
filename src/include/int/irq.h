@@ -38,7 +38,7 @@ extern void k_irq13();
 extern void k_irq14();
 extern void k_irq15();
 
-typedef void (*k_irq_seted_handler)(registers_t *registers);
+typedef void (*k_irq_seted_handler)(registers_t registers);
 
 void k_irq_set_handler(uint8_t i, k_irq_seted_handler);
 
@@ -46,7 +46,7 @@ void k_irq_unset_handler(uint8_t i);
 
 void k_irq_remap();
 
-void k_irq_handler(registers_t *registers);
+void k_irq_handler(registers_t registers);
 
 void k_init_irq();
 
