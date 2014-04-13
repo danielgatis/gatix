@@ -16,30 +16,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_types_h
-#define _std_types_h
+#include "std/string.h"
 
-#define K_4KB 0x1000
-#define K_1MB 0x100000
-
-typedef unsigned long long   uint64_t;
-typedef          long long   int64_t;
-
-typedef unsigned int   uint32_t;
-typedef          int   int32_t;
-
-typedef unsigned short uint16_t;
-typedef          short int16_t;
-
-typedef unsigned char  uint8_t;
-typedef          char  int8_t;
-
-typedef struct registers
+int strcmp(char *str1, char *str2)
 {
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+  int i = 0;
+  int failed = 0;
+  while (str1[i] != '\0' && str2[i] != '\0')
+  {
+    if (str1[i] != str2[i])
+    {
+      failed = 1;
+      break;
+    }
+    i++;
+  }
 
-#endif
+  if ( (str1[i] == '\0' && str2[i] != '\0') || (str1[i] != '\0' && str2[i] == '\0') )
+    failed = 1;
+
+  return failed;
+}
+
+char *strcpy(char *dest, const char *src)
+{
+  do
+  {
+    *dest++ = *src++;
+  }
+  while (*src != 0);
+
+  return dest;
+}
+
+char *strcat(char *dest, const char *src)
+{
+  while (*dest) dest++;
+  while (*src) *dest++ = *src++;
+  *dest = '\0';
+
+  return dest;
+}
+
+int strlen(char *src)
+{
+  int i = 0;
+  while (*src++)
+    i++;
+  return i;
+}

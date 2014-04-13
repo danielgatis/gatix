@@ -16,30 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_types_h
-#define _std_types_h
+#include "std/panic.h"
+#include "std/elf.h"
+#include "output/monitor.h"
 
-#define K_4KB 0x1000
-#define K_1MB 0x100000
+extern elf_t kernel_elf;
 
-typedef unsigned long long   uint64_t;
-typedef          long long   int64_t;
-
-typedef unsigned int   uint32_t;
-typedef          int   int32_t;
-
-typedef unsigned short uint16_t;
-typedef          short int16_t;
-
-typedef unsigned char  uint8_t;
-typedef          char  int8_t;
-
-typedef struct registers
+void k_panic(char *msg)
 {
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+  k_monitor_puts_s("System panic: ");
+  k_monitor_puts_s(msg);
+  k_monitor_puts_c('\n');
 
-#endif
+  k_print_stack_trace();
+
+  __asm__ __volatile__ ("cli");
+  __asm__ __volatile__ ("hlt");
+}
+
+void k_print_stack_trace()
+{
+  uint32_t *ebp, *eip;
+  __asm__ __volatile__ ("mov %%ebp, %0" : "=r" (ebp));
+  while (ebp)
+  {
+    eip = ebp + 1;
+    k_monitor_puts_s("\t[");
+    k_monitor_puts_hex(*eip);
+    k_monitor_puts_s("]\t");
+    k_monitor_puts_s(elf_lookup_symbol(*eip, &kernel_elf));
+    ebp = (uint32_t*) *ebp;
+  }
+}

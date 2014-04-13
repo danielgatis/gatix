@@ -1,4 +1,4 @@
-[BITS 32]
+bits 32
 
 %macro IRQ 2
   global k_irq%1

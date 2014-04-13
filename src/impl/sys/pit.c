@@ -18,7 +18,7 @@
 
 #include "sys/pit.h"
 #include "std/io.h"
-#include "int/irq.h"
+#include "desc/idt.h"
 
 uint32_t timer_ticks = 0;
 
@@ -42,5 +42,5 @@ void k_timer_handler(registers_t registers)
 void k_init_timer()
 {
   k_timer_phase(50);
-  k_irq_set_handler(0, k_timer_handler);
+  k_idt_set_handler(0, k_timer_handler);
 }

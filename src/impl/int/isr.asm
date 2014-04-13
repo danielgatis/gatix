@@ -1,4 +1,4 @@
-[BITS 32]
+bits 32
 
 %macro ISR_NOERRCODE 1
   global k_isr%1

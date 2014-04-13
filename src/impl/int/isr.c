@@ -19,6 +19,7 @@
 #include "int/isr.h"
 #include "output/monitor.h"
 #include "desc/idt.h"
+#include "std/panic.h"
 
 char *exception_messages[] =
 {
@@ -97,10 +98,14 @@ void k_init_isr()
 
 void k_isr_handler(registers_t registers)
 {
-  if (registers.int_no < 32)
+  if (k_idt_get_handler(registers.int_no))
+  {
+    k_idt_get_handler(registers.int_no)(registers);
+  }
+  else
   {
     k_monitor_puts_s(exception_messages[registers.int_no] + '\n');
-    k_monitor_puts_s("Exception. System Halted!\n");
+    k_panic("Exception. System Halted!\n");
 
     __asm__ __volatile__ ("cli");
     __asm__ __volatile__ ("hlt");

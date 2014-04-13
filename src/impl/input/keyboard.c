@@ -18,7 +18,7 @@
 
 #include "input/keyboard.h"
 #include "std/io.h"
-#include "int/irq.h"
+#include "desc/idt.h"
 #include "output/monitor.h"
 
 unsigned char kbdus[128] =
@@ -74,5 +74,5 @@ void k_keyboard_handler(registers_t registers)
 
 void k_init_keyboard()
 {
-  k_irq_set_handler(1, k_keyboard_handler);
+  k_idt_set_handler(1, k_keyboard_handler);
 }

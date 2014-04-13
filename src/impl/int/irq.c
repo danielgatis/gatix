@@ -20,21 +20,6 @@
 #include "std/io.h"
 #include "desc/idt.h"
 
-k_irq_seted_handler handlers[16] = {
-  0, 0, 0, 0, 0, 0, 0, 0,
-  0, 0, 0, 0, 0, 0, 0, 0
-};
-
-void k_irq_set_handler(uint8_t i, k_irq_seted_handler handler)
-{
-  handlers[i] = handler;
-}
-
-void k_irq_unset_handler(uint8_t i)
-{
-  handlers[i] = 0;
-}
-
 void k_irq_remap()
 {
   k_outb(0x20, 0x11);
@@ -73,11 +58,11 @@ void k_init_irq()
 
 void k_irq_handler(registers_t registers)
 {
-  k_irq_seted_handler handler = handlers[registers.int_no - 32];
+  int int_no = registers.int_no - 32;
 
-  if (handler)
+  if (k_idt_get_handler(int_no))
   {
-    handler(registers);
+    k_idt_get_handler(int_no)(registers);
   }
 
   if (registers.int_no >= 40)

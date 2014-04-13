@@ -1,4 +1,4 @@
-[BITS 32]
+bits 32
 
 global k_idt_flush
 k_idt_flush:

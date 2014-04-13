@@ -16,30 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_types_h
-#define _std_types_h
+#ifndef _mm_heap_h_
+#define _mm_heap_h_
 
-#define K_4KB 0x1000
-#define K_1MB 0x100000
+#define K_HEAP_START 0xD0000000
+#define K_HEAP_END   0xFFBFF000
 
-typedef unsigned long long   uint64_t;
-typedef          long long   int64_t;
+#include "std/types.h"
 
-typedef unsigned int   uint32_t;
-typedef          int   int32_t;
-
-typedef unsigned short uint16_t;
-typedef          short int16_t;
-
-typedef unsigned char  uint8_t;
-typedef          char  int8_t;
-
-typedef struct registers
+typedef struct header
 {
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+  struct header *prev, *next;
+  uint32_t allocated : 1;
+  uint32_t length : 31;
+} header_t;
+
+void k_init_heap();
+
+// Returns a pointer to a chunk of memory, minimum size 'l' bytes.
+void *k_malloc (uint32_t l);
+
+// Returns a pointer to a chunk of memory, minimum size 'l' bytes,
+// and zero it's contents
+void *k_cmalloc (uint32_t l);
+
+// Takes a chunk of memory allocated with kmalloc, and returns it to the pool of usable memory.
+void k_free (void *p);
 
 #endif

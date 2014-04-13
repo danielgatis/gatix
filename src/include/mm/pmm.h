@@ -16,30 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_types_h
-#define _std_types_h
+#ifndef _mm_pmm_h_
+#define _mm_pmm_h_
 
-#define K_4KB 0x1000
-#define K_1MB 0x100000
+#include "std/types.h"
+#include "load/multiboot.h"
 
-typedef unsigned long long   uint64_t;
-typedef          long long   int64_t;
+#define K_PMM_STACK_ADDR 0xFF000000
 
-typedef unsigned int   uint32_t;
-typedef          int   int32_t;
+void k_init_pmm(uint32_t start);
 
-typedef unsigned short uint16_t;
-typedef          short int16_t;
+uint32_t k_pmm_alloc_page();
 
-typedef unsigned char  uint8_t;
-typedef          char  int8_t;
-
-typedef struct registers
-{
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+void k_pmm_free_page(uint32_t p);
 
 #endif

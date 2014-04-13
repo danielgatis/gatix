@@ -16,30 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_types_h
-#define _std_types_h
+#ifndef _std_panic_h_
+#define _std_panic_h_
 
-#define K_4KB 0x1000
-#define K_1MB 0x100000
+void k_panic(char *msg);
 
-typedef unsigned long long   uint64_t;
-typedef          long long   int64_t;
-
-typedef unsigned int   uint32_t;
-typedef          int   int32_t;
-
-typedef unsigned short uint16_t;
-typedef          short int16_t;
-
-typedef unsigned char  uint8_t;
-typedef          char  int8_t;
-
-typedef struct registers
-{
-  uint32_t ds;
-  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
-  uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, useresp, ss;
-} registers_t;
+void k_print_stack_trace();
 
 #endif

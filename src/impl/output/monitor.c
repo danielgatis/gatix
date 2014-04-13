@@ -234,7 +234,7 @@ void k_monitor_puts_dec(uint32_t n)
   c2[i--] = 0;
   int j = 0;
 
-  while(i >= 0)
+  while (i >= 0)
   {
     c2[i--] = c[j++];
   }

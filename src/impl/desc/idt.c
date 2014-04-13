@@ -22,6 +22,25 @@
 
 idt_entry_t idt[256];
 idt_ptr_t idt_ptr;
+k_idt_seted_handler handlers[16] = {
+  0, 0, 0, 0, 0, 0, 0, 0,
+  0, 0, 0, 0, 0, 0, 0, 0
+};
+
+void k_idt_set_handler(uint8_t i, k_idt_seted_handler handler)
+{
+  handlers[i] = handler;
+}
+
+k_idt_seted_handler k_idt_get_handler(uint8_t i)
+{
+  return handlers[i];
+}
+
+void k_idt_unset_handler(uint8_t i)
+{
+  handlers[i] = 0;
+}
 
 void k_idt_add_entry(uint8_t i, uint32_t base, uint16_t sel, uint8_t flags)
 {

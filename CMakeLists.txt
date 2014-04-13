@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 2.8)
 PROJECT (gatix)
 
-SET (CMAKE_C_LINK_FLAGS "-m elf_i386 -T${PROJECT_SOURCE_DIR}/src/arch/i386/link.ld")
+SET (CMAKE_C_LINK_FLAGS "-m elf_i386 -T${PROJECT_SOURCE_DIR}/src/impl/link.ld")
 SET (CMAKE_C_FLAGS "-m32 -fno-stack-protector -fno-builtin -ffreestanding -O -g -Wall -std=c99")
 SET (CMAKE_C_LINK_EXECUTABLE "/usr/bin/ld <CMAKE_C_LINK_FLAGS> <OBJECTS> -o <TARGET>")
 SET (CMAKE_ASM_NASM_OBJECT_FORMAT "elf32")

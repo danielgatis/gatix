@@ -40,6 +40,14 @@ struct idt_ptr_struct
 
 typedef struct idt_ptr_struct idt_ptr_t;
 
+typedef void (*k_idt_seted_handler)(registers_t registers);
+
+k_idt_seted_handler k_idt_get_handler(uint8_t i);
+
+void k_idt_set_handler(uint8_t i, k_idt_seted_handler);
+
+void k_idt_unset_handler(uint8_t i);
+
 void k_init_idt();
 
 void k_idt_add_entry(uint8_t i, uint32_t base, uint16_t sel, uint8_t flags);
