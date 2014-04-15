@@ -32,9 +32,8 @@ global start
 extern k_main
 
 start:
-    push esp           ; push the stack addr
-    push ebx           ; push a pointer to the multiboot info structure.
     mov ebp, 0         ; initialise the base pointer to zero so we can terminate stack traces here.
+    push ebx           ; push a pointer to the multiboot info structure.
 
     cli
     call k_main
