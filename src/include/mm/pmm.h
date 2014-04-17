@@ -20,14 +20,28 @@
 #define _mm_pmm_h_
 
 #include "std/types.h"
-#include "load/multiboot.h"
 
-#define K_PMM_STACK_ADDR 0xFF000000
+ //! 8 blocks per byte
+#define K_PMM_BLOCKS_PER_BYTE 8
 
-void k_init_pmm(uint32_t start);
+//! block size (4k)
+#define K_PMM_BLOCK_SIZE 4096
 
-uint32_t k_pmm_alloc_page();
+//! block alignment
+#define K_PMM_BLOCK_ALIGN  K_PMM_BLOCK_SIZE
 
-void k_pmm_free_page(uint32_t p);
+void k_init_pmm(uint32_t base, uint32_t size);
+
+void k_pmm_init_region(uint32_t base, uint32_t size);
+
+void k_pmm_set(uint32_t bit);
+
+void k_pmm_unset(uint32_t bit);
+
+int k_pmm_test(uint32_t bit);
+
+int k_pmm_first_free();
+
+int k_mmap_first_free_s(uint32_t size);
 
 #endif

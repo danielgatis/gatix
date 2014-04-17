@@ -17,51 +17,88 @@
  */
 
 #include "mm/pmm.h"
-#include "mm/vmm.h"
-#include "std/types.h"
-#include "std/panic.h"
+#include "std/memory.h"
 
-uint32_t pmm_stack_loc = K_PMM_STACK_ADDR;
-uint32_t pmm_stack_max = K_PMM_STACK_ADDR;
-uint32_t pmm_location = 0;
-char pmm_paging_active = 0;
+//! size of physical memory
+static  uint32_t  k_pmm_memory_size = 0;
 
-void k_init_pmm(uint32_t start)
+//! maximum number of available memory blocks
+static  uint32_t  k_pmm_max_blocks = 0;
+
+//! memory map bit array. Each bit represents a memory block
+static  uint32_t* k_pmm_memory_map = 0;
+
+void k_init_pmm(uint32_t base, uint32_t size)
 {
-  pmm_location = (start + K_4KB) & K_PAGE_MASK;
+  k_pmm_memory_size  = size;
+  k_pmm_memory_map = (uint32_t*) base;
+  k_pmm_max_blocks = (k_pmm_memory_size * 1024) / K_PMM_BLOCK_SIZE;
+
+  k_memset(k_pmm_memory_map, 0x0, k_pmm_max_blocks / K_PMM_BLOCKS_PER_BYTE);
 }
 
-uint32_t k_pmm_alloc_page()
+void k_pmm_set(uint32_t bit)
 {
-  if (pmm_paging_active)
-  {
-    if (pmm_stack_loc == K_PMM_STACK_ADDR)
-      k_panic("Error: out of memory.");
-
-    pmm_stack_loc -= sizeof(uint32_t);
-    uint32_t *stack = (uint32_t*)pmm_stack_loc;
-
-    return *stack;
-  }
-  else
-  {
-    return pmm_location += K_4KB;
-  }
+  k_pmm_memory_map[bit / 32] |= (1 << (bit % 32));
 }
 
-void k_pmm_free_page(uint32_t p)
+void k_pmm_unset(uint32_t bit)
 {
-  if (p < pmm_location) return;
+  k_pmm_memory_map[bit / 32] &= ~ (1 << (bit % 32));
+}
 
-  if (pmm_stack_max <= pmm_stack_loc)
+int k_pmm_test(uint32_t bit)
+{
+  return k_pmm_memory_map[bit / 32] & (1 << (bit % 32));
+}
+
+int k_pmm_first_free()
+{
+  for (uint32_t i = 0; i < k_pmm_max_blocks / 32; i++)
   {
-    k_map(pmm_stack_max, p, K_PAGE_PRESENT | K_PAGE_WRITE);
-    pmm_stack_max += 4096;
+    if (k_pmm_memory_map[i] != 0xffffffff)
+    {
+      for (int j = 0; j < 32; j++)
+      {
+        int32_t bit = 1 << j;
+
+        if (! (k_pmm_memory_map[i] & bit) )
+        {
+          return i * 4 * 8 + j;
+        }
+      }
+    }
   }
-  else
+
+  return -1;
+}
+
+int k_mmap_first_free_s(uint32_t size) {
+  if (size == 0) return -1;
+  if (size == 1 ) return k_pmm_first_free();
+
+  for (uint32_t i = 0; i< k_pmm_max_blocks / 32; i++)
   {
-    uint32_t *stack = (uint32_t*)pmm_stack_loc;
-    *stack = p;
-    pmm_stack_loc += sizeof(uint32_t);
+    if (k_pmm_memory_map[i] != 0xffffffff)
+    {
+      for (int j = 0; j < 32; j++)
+      {
+        int32_t bit = 1 << j;
+        if (! (k_pmm_memory_map[i] & bit) )
+        {
+          int startingBit = i * 32;
+          startingBit += bit;
+
+          uint32_t free = 0;
+          for (uint32_t count = 0; count <= size; count++)
+          {
+            if (! k_pmm_test(startingBit + count) ) free++;
+            if (free == size) return i * 4 * 8+ j;
+          }
+        }
+      }
+    }
   }
+
+  return -1;
 }

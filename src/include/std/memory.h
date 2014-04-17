@@ -21,6 +21,6 @@
 
 #include "std/types.h"
 
-void k_memset(uint8_t *dest, uint8_t val, uint32_t count);
+void k_memset(uint32_t *dest, uint32_t val, uint32_t count);
 
 #endif

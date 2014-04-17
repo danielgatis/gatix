@@ -16,35 +16,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-ENTRY(start)
+ENTRY(_start)
 SECTIONS
 {
   . = 1M;
 
-  .text : ALIGN(4K)
+  .text BLOCK(4K) : ALIGN(4K)
   {
     *(.multiboot)
     *(.text)
   }
 
-  .rodata : ALIGN(4K)
+  .rodata BLOCK(4K) : ALIGN(4K)
   {
     *(.rodata)
   }
 
-  .data : ALIGN(4K)
+  .data BLOCK(4K) : ALIGN(4K)
   {
     *(.data)
   }
 
-  .bss : ALIGN(4K)
+  .bss BLOCK(4K) : ALIGN(4K)
   {
     *(COMMON)
     *(.bss)
-  }
-
-  /DISCARD/ : ALIGN(4K)
-  {
-    *(.comment)
+    *(.bootstrap_stack)
   }
 }

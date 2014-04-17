@@ -175,7 +175,7 @@ void k_monitor_puts_s(char *c)
   }
 }
 
-void k_monitor_puts_hex(uint32_t n)
+void k_monitor_puts_hex(int32_t n)
 {
   char* hex = "0123456789ABCDEF";
   k_monitor_puts_s("0x");
@@ -184,7 +184,7 @@ void k_monitor_puts_hex(uint32_t n)
   }
 }
 
-void k_monitor_puts_dec(uint32_t n)
+void k_monitor_puts_dec(int32_t n)
 {
   /* enough for 64 bit integer */
   int INT_DIGITS = 19;

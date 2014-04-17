@@ -29,9 +29,9 @@ void k_monitor_puts_c(char c);
 
 void k_monitor_puts_s(char *c);
 
-void k_monitor_puts_dec(uint32_t n);
+void k_monitor_puts_dec(int32_t n);
 
-void k_monitor_puts_hex(uint32_t n);
+void k_monitor_puts_hex(int32_t n);
 
 void k_monitor_clr();
 

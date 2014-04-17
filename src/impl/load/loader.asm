@@ -14,31 +14,36 @@
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-MBOOT_PAGE_ALIGN    equ 1<<0
-MBOOT_MEM_INFO      equ 1<<1
-MBOOT_HEADER_MAGIC  equ 0x1BADB002
-MBOOT_HEADER_FLAGS  equ MBOOT_PAGE_ALIGN | MBOOT_MEM_INFO
-MBOOT_CHECKSUM      equ -(MBOOT_HEADER_MAGIC + MBOOT_HEADER_FLAGS)
-
-bits 32
+MBALIGN     equ  1<<0
+MEMINFO     equ  1<<1
+FLAGS       equ  MBALIGN | MEMINFO
+MAGIC       equ  0x1BADB002
+CHECKSUM    equ -(MAGIC + FLAGS)
 
 section .multiboot
 align 4
-  dd MBOOT_HEADER_MAGIC
-  dd MBOOT_HEADER_FLAGS
-  dd MBOOT_CHECKSUM
+  dd MAGIC
+  dd FLAGS
+  dd CHECKSUM
 
-global start
-extern k_main
+section .bootstrap_stack
+align 4
+stack_bottom:
+times 16384 db 0
+stack_top:
 
-start:
-    mov ebp, 0         ; initialise the base pointer to zero so we can terminate stack traces here.
-    push ebx           ; push a pointer to the multiboot info structure.
+section .text
+global _start
+_start:
+  mov esp, stack_top
+  push ebx
+  mov ebp, 0
 
-    cli
-    call k_main
-    cli
+  extern k_main
+  call k_main
 
-.halt:
-    hlt
-    jmp .halt
+  cli
+
+.hang:
+  hlt
+  jmp .hang
