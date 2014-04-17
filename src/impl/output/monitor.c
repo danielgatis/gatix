@@ -175,7 +175,7 @@ void k_monitor_puts_s(char *c)
   }
 }
 
-void k_monitor_puts_hex(int32_t n)
+void k_monitor_puts_hex(uint32_t n)
 {
   char* hex = "0123456789ABCDEF";
   k_monitor_puts_s("0x");
@@ -184,32 +184,34 @@ void k_monitor_puts_hex(int32_t n)
   }
 }
 
-void k_monitor_puts_dec(int32_t n)
+void k_monitor_puts_dec(uint32_t n)
 {
-  /* enough for 64 bit integer */
-  int INT_DIGITS = 19;
-
-  char buf[INT_DIGITS + 2];
-
-  /* points to terminating '\0' */
-  char *p = buf + INT_DIGITS + 1;
-
-  if (n >= 0)
+  if (n == 0)
   {
-    do
-    {
-      *--p = '0' + (n % 10);
-      n /= 10;
-    } while (n != 0);
-  }
-  else {
-    do
-    {
-      *--p = '0' - (n % 10);
-      n /= 10;
-    } while (n != 0);
-    *--p = '-';
+    k_monitor_puts_c('0');
+    return;
   }
 
-  k_monitor_puts_s(p);
+  char c[32];
+  char c2[32];
+  
+  int32_t acc = n;
+  
+  int i = 0;
+  while (acc > 0)
+  {
+    c[i] = '0' + acc%10;
+    acc /= 10;
+    i++;
+  }
+  c[i] = 0;
+
+  c2[i--] = 0;
+  int j = 0;
+  while(i >= 0)
+  {
+    c2[i--] = c[j++];
+  }
+
+  k_monitor_puts_s(c2);
 }

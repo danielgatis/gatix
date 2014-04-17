@@ -34,7 +34,7 @@ void k_init_pmm(uint32_t base, uint32_t size)
   k_pmm_memory_map = (uint32_t*) base;
   k_pmm_max_blocks = (k_pmm_memory_size * 1024) / K_PMM_BLOCK_SIZE;
 
-  k_memset(k_pmm_memory_map, 0x0, k_pmm_max_blocks / K_PMM_BLOCKS_PER_BYTE);
+  memset(k_pmm_memory_map, 0x0, k_pmm_max_blocks / K_PMM_BLOCKS_PER_BYTE);
 }
 
 void k_pmm_set(uint32_t bit)

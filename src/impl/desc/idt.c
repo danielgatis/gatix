@@ -56,6 +56,6 @@ void k_init_idt()
 {
   idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;
   idt_ptr.base = (uint32_t)&idt;
-  k_memset((uint32_t*)&idt, 0, sizeof(idt_entry_t) * 256);
+  memset((void *)&idt, 0, sizeof(idt_entry_t) * 256);
   k_idt_flush(&idt_ptr);
 }

@@ -76,7 +76,7 @@
 // void *k_cmalloc(uint32_t l)
 // {
 //   void *mem = k_malloc(l);
-//   k_memset(mem, 0, l);
+//   memset(mem, 0, l);
 //   return mem;
 // }
 

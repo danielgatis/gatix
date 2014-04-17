@@ -18,10 +18,16 @@
 
 #include "std/memory.h"
 
-void k_memset(uint32_t *dest, uint32_t val, uint32_t count)
+void memset(void *dest, uint32_t value, uint32_t size)
 {
-  for (uint32_t i = 0; i < count; i++)
-  {
-    dest[i] = val;
+	if (size) {
+  	char *dest = dest;
+ 		do
+ 		{
+    	*dest++ = value;
+    }
+    while (--size);
   }
+
+  return dest;
 }

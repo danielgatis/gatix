@@ -43,7 +43,7 @@
 //   page_directory_t *pd = (page_directory_t*)k_pmm_alloc_page();
 
 //   // Initialise it.
-//   k_memset((uint8_t*)pd, 0, K_4KB);
+//   memset((uint8_t*)pd, 0, K_4KB);
 
 //   // Identity map the first 4 MB.
 //   pd[0] = k_pmm_alloc_page() | K_PAGE_PRESENT | K_PAGE_WRITE;
@@ -54,7 +54,7 @@
 //   // Assign the second-last table and zero it.
 //   pd[1022] = k_pmm_alloc_page() | K_PAGE_PRESENT | K_PAGE_WRITE;
 //   pt = (uint32_t*) (pd[1022] & K_PAGE_MASK);
-//   k_memset((uint8_t*)pt, 0, K_4KB);
+//   memset((uint8_t*)pt, 0, K_4KB);
 
 //   // The last entry of the second-last table is the directory itself.
 //   pt[1023] = (uint32_t)pd | K_PAGE_PRESENT | K_PAGE_WRITE;
@@ -74,7 +74,7 @@
 //   // else it will panic on the first "pmm_free_page".
 //   uint32_t pt_idx = K_PAGE_DIR_IDX((K_PMM_STACK_ADDR >> 12));
 //   page_directory[pt_idx] = k_pmm_alloc_page() | K_PAGE_PRESENT | K_PAGE_WRITE;
-//   k_memset((uint8_t*)page_tables[pt_idx * 1024], 0, K_4KB);
+//   memset((uint8_t*)page_tables[pt_idx * 1024], 0, K_4KB);
 
 //   // Paging is now active. Tell the physical memory manager.
 //   pmm_paging_active = 1;
@@ -97,7 +97,7 @@
 //   {
 //     // The page table holding this page has not been created yet.
 //     page_directory[pt_idx] = k_pmm_alloc_page() | K_PAGE_PRESENT | K_PAGE_WRITE;
-//     k_memset((uint8_t*)page_tables[pt_idx * 1024], 0, K_4KB);
+//     memset((uint8_t*)page_tables[pt_idx * 1024], 0, K_4KB);
 //   }
 
 //   // Now that the page table definately exists, we can update the PTE.
