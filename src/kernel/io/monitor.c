@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "output/monitor.h"
-#include "std/io.h"
+#include "io/monitor.h"
+#include "io/serial.h"
 
 // the VGA framebuffer.
 uint16_t *video_memory = 0;
@@ -194,9 +194,9 @@ void k_monitor_puts_dec(uint32_t n)
 
   char c[32];
   char c2[32];
-  
+
   int32_t acc = n;
-  
+
   int i = 0;
   while (acc > 0)
   {

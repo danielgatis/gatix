@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "desc/idt.h"
+#include "arch/idt.h"
+#include "io/monitor.h"
 #include "std/memory.h"
-#include "output/monitor.h"
 
 idt_entry_t idt[256];
 idt_ptr_t idt_ptr;

@@ -16,23 +16,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "std/io.h"
+#include "std/elf.h"
+#include "init/multiboot.h"
+#include "io/monitor.h"
+#include "io/keyboard.h"
+#include "arch/gdt.h"
+#include "arch/idt.h"
+#include "arch/isr.h"
+#include "arch/irq.h"
+#include "arch/pit.h"
 
-void k_outb(uint16_t port, uint8_t value)
-{
-  __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (value));
-}
+elf_t kernel_elf;
+extern uint32_t end;
 
-uint8_t k_inb(uint16_t port)
+int k_main(multiboot_info_t *mboot_ptr)
 {
-  uint8_t ret;
-  __asm__ __volatile__ ("inb %1, %0" : "=a" (ret) : "dN" (port));
-  return ret;
-}
+  k_init_monitor();
 
-uint16_t k_inw(uint16_t port)
-{
-  uint16_t ret;
-  __asm__ __volatile__ ("inw %1, %0" : "=a" (ret) : "dN" (port));
-  return ret;
+  kernel_elf = elf_from_multiboot(mboot_ptr);
+
+  k_init_gdt();
+  k_init_idt();
+
+  k_init_isr();
+  k_init_irq();
+
+  k_monitor_puts_s("PIT\n");
+  k_init_timer();
+
+  k_monitor_puts_s("KBD\n");
+  k_init_keyboard();
+
+  __asm__ __volatile__("sti");
+
+  for (;;) {};
+
+  return 0xdeadbeef;
 }

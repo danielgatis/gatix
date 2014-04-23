@@ -16,40 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "std/elf.h"
-#include "load/multiboot.h"
-#include "output/monitor.h"
-#include "input/keyboard.h"
-#include "desc/gdt.h"
-#include "desc/idt.h"
-#include "int/isr.h"
-#include "int/irq.h"
-#include "sys/pit.h"
+#include "io/serial.h"
 
-elf_t kernel_elf;
-extern uint32_t end;
-
-int k_main(multiboot_info_t *mboot_ptr)
+void k_outb(uint16_t port, uint8_t value)
 {
-  k_init_monitor();
+  __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (value));
+}
 
-  kernel_elf = elf_from_multiboot(mboot_ptr);
+uint8_t k_inb(uint16_t port)
+{
+  uint8_t ret;
+  __asm__ __volatile__ ("inb %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
+}
 
-  k_init_gdt();
-  k_init_idt();
-
-  k_init_isr();
-  k_init_irq();
-
-  k_monitor_puts_s("PIT\n");
-  k_init_timer();
-
-  k_monitor_puts_s("KBD\n");
-  k_init_keyboard();
-
-  __asm__ __volatile__("sti");
-
-  for (;;) {};
-
-  return 0xdeadbeef;
+uint16_t k_inw(uint16_t port)
+{
+  uint16_t ret;
+  __asm__ __volatile__ ("inw %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
 }

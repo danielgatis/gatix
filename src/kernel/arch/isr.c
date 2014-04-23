@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "int/isr.h"
-#include "output/monitor.h"
-#include "desc/idt.h"
+#include "arch/isr.h"
+#include "arch/idt.h"
+#include "io/monitor.h"
 #include "std/panic.h"
 
 char *exception_messages[] =

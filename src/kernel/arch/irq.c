@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "int/irq.h"
-#include "std/io.h"
-#include "desc/idt.h"
+#include "arch/irq.h"
+#include "arch/idt.h"
+#include "io/serial.h"
 
 void k_irq_remap()
 {

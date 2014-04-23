@@ -16,9 +16,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "sys/pit.h"
-#include "std/io.h"
-#include "desc/idt.h"
+#include "arch/pit.h"
+#include "arch/idt.h"
+#include "io/serial.h"
 
 uint32_t timer_ticks = 0;
 

@@ -16,10 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "input/keyboard.h"
-#include "std/io.h"
-#include "desc/idt.h"
-#include "output/monitor.h"
+#include "io/keyboard.h"
+#include "io/monitor.h"
+#include "io/serial.h"
+#include "arch/idt.h"
 
 unsigned char kbdus[128] =
 {

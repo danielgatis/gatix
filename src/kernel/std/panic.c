@@ -18,7 +18,7 @@
 
 #include "std/panic.h"
 #include "std/elf.h"
-#include "output/monitor.h"
+#include "io/monitor.h"
 
 extern elf_t kernel_elf;
 

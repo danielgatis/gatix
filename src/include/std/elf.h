@@ -20,7 +20,7 @@
 #define _std_elf_h_
 
 #include "std/types.h"
-#include "load/multiboot.h"
+#include "init/multiboot.h"
 
 #define ELF32_ST_BIND(i) ((i)>>4)
 #define ELF32_ST_TYPE(i) ((i)&0xf)
