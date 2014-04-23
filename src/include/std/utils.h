@@ -16,23 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _output_monitor_h_
-#define _output_monitor_h_
+#ifndef _std_utils_h
+#define _std_utils_h
 
-#include "std/types.h"
+#include "types.h"
 
-void k_init_monitor();
+#define is_upper(c)  ((c) >= 'A' && (c) <= 'Z')
+#define to_lower(c)  (is_upper(c) ? (((c) - 'A') + 'a') : (c))
+#define is_alpha(c)  (((c) >= 'a' && (c) <= 'z') || ((c) >= 'A' && (c) <= 'Z'))
+#define is_digit(c)  ((c) >= '0' && (c) <= '9')
+#define is_alnum(c)  (is_alpha(c) || is_digit(c))
+#define is_xdigit(c) (is_digit(c) || ((c) > 'a' && (c) < 'f'))
+#define UNUSED(x) (void)(x)
 
-void k_set_text_color(uint8_t foreground_color, uint8_t background_color);
-
-void k_monitor_puts_c(char c);
-
-void k_monitor_puts_s(char *c);
-
-void k_monitor_puts_dec(uint32_t n);
-
-void k_monitor_puts_hex(uint32_t n);
-
-void k_monitor_clr();
+long int strtol(const char *str, char **endptr, int base);
+char *itoa(unsigned long value, char *str, int base);
+int   atoi(char *str);
 
 #endif

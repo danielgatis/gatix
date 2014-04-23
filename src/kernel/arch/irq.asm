@@ -1,12 +1,12 @@
 bits 32
 
 %macro IRQ 2
-  global k_irq%1
-  k_irq%1:
+  global irq%1
+  irq%1:
     cli
     push byte 0
     push byte %2
-    jmp k_irq_stub
+    jmp irq_stub
 %endmacro
 
 IRQ 0, 32
@@ -26,29 +26,32 @@ IRQ 13, 45
 IRQ 14, 46
 IRQ 15, 47
 
-extern k_irq_handler
-k_irq_stub:
+extern irq_handler
+irq_stub:
   pusha
+  push ds
+  push es
+  push fs
+  push gs
 
-  mov ax, ds
+  mov  ax, 0x10
+  mov  ds, ax
+  mov  es, ax
+  mov  fs, ax
+  mov  gs, ax
+
+  mov  eax, esp
   push eax
 
-  mov ax, 0x10
-  mov ds, ax
-  mov es, ax
-  mov fs, ax
-  mov gs, ax
+  mov  eax, irq_handler
+  call eax
 
-  call k_irq_handler
-
-  pop ebx
-  mov ds, bx
-  mov es, bx
-  mov fs, bx
-  mov gs, bx
-
+  pop  eax
+  pop  gs
+  pop  fs
+  pop  es
+  pop  ds
   popa
-  add esp, 8
+  add  esp, 8
   sti
   iret
-

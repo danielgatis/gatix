@@ -16,46 +16,45 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _int_isr_h_
-#define _int_isr_h_
+#ifndef _arch_isr_h_
+#define _arch_isr_h_
 
 #include "std/types.h"
 
-extern void k_isr0();
-extern void k_isr1();
-extern void k_isr2();
-extern void k_isr3();
-extern void k_isr4();
-extern void k_isr5();
-extern void k_isr6();
-extern void k_isr7();
-extern void k_isr8();
-extern void k_isr9();
-extern void k_isr10();
-extern void k_isr11();
-extern void k_isr12();
-extern void k_isr13();
-extern void k_isr14();
-extern void k_isr15();
-extern void k_isr16();
-extern void k_isr17();
-extern void k_isr18();
-extern void k_isr19();
-extern void k_isr20();
-extern void k_isr21();
-extern void k_isr22();
-extern void k_isr23();
-extern void k_isr24();
-extern void k_isr25();
-extern void k_isr26();
-extern void k_isr27();
-extern void k_isr28();
-extern void k_isr29();
-extern void k_isr30();
-extern void k_isr31();
+extern void isr0();
+extern void isr1();
+extern void isr2();
+extern void isr3();
+extern void isr4();
+extern void isr5();
+extern void isr6();
+extern void isr7();
+extern void isr8();
+extern void isr9();
+extern void isr10();
+extern void isr11();
+extern void isr12();
+extern void isr13();
+extern void isr14();
+extern void isr15();
+extern void isr16();
+extern void isr17();
+extern void isr18();
+extern void isr19();
+extern void isr20();
+extern void isr21();
+extern void isr22();
+extern void isr23();
+extern void isr24();
+extern void isr25();
+extern void isr26();
+extern void isr27();
+extern void isr28();
+extern void isr29();
+extern void isr30();
+extern void isr31();
 
-void k_init_isr();
-
-void k_isr_handler(registers_t registers);
+void isr_init(uint16_t kcode);
+void isr_handler(registers_t *registers);
 
 #endif

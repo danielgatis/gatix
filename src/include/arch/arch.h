@@ -16,35 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "std/panic.h"
-#include "std/elf.h"
-#include "io/monitor.h"
+#ifndef _arch_arch_h
+#define _arch_arch_h
 
-extern elf_t kernel_elf;
+#include "std/types.h"
 
-void k_panic(char *msg)
-{
-  k_monitor_puts_s("System panic: ");
-  k_monitor_puts_s(msg);
-  k_monitor_puts_c('\n');
+void outb(uint16_t port, uint8_t value);
+uint8_t inb(uint16_t port);
 
-  k_print_stack_trace();
+uint16_t inw(uint16_t port);
 
-  __asm__ __volatile__ ("cli");
-  __asm__ __volatile__ ("hlt");
-}
-
-void k_print_stack_trace()
-{
-  uint32_t *ebp, *eip;
-  __asm__ __volatile__ ("mov %%ebp, %0" : "=r" (ebp));
-  while (ebp)
-  {
-    eip = ebp + 1;
-    k_monitor_puts_s("\t[");
-    k_monitor_puts_hex(*eip);
-    k_monitor_puts_s("]\t");
-    k_monitor_puts_s(elf_lookup_symbol(*eip, &kernel_elf));
-    ebp = (uint32_t*) *ebp;
-  }
-}
+#endif

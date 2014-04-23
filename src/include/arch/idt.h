@@ -16,42 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _desc_idt_h_
-#define _desc_idt_h_
+#ifndef _arch_idt_h_
+#define _arch_idt_h_
 
 #include "std/types.h"
 
-struct idt_entry_struct
+#define IDT_NUM_ENTRIES         256
+#define IDT_FLAG_TYPE32TASK     (0x05 << 0)
+#define IDT_FLAG_TYPE16INT      (0x06 << 0)
+#define IDT_FLAG_TYPE16TRAP     (0x07 << 0)
+#define IDT_FLAG_TYPE32INT      (0x0e << 0)
+#define IDT_FLAG_TYPE32TRAP     (0x0f << 0)
+#define IDT_FLAG_STORAGE        (0x01 << 4)
+#define IDT_FLAG_RING0          (0x00 << 5)
+#define IDT_FLAG_RING1          (0x01 << 5)
+#define IDT_FLAG_RING2          (0x02 << 5)
+#define IDT_FLAG_RING3          (0x03 << 5)
+#define IDT_FLAG_PRESENT        (0x01 << 7)
+
+typedef struct
 {
   uint16_t base_lo;
-  uint16_t sel;
+  uint16_t selector;
   uint8_t  always0;
   uint8_t  flags;
   uint16_t base_hi;
-} __attribute__((packed));
+} __attribute__((packed)) idt_entry_t;
 
-typedef struct idt_entry_struct idt_entry_t;
 
-struct idt_ptr_struct
+typedef struct
 {
   uint16_t limit;
   uint32_t base;
-} __attribute__((packed));
+} __attribute__((packed)) idt_ptr_t;
 
-typedef struct idt_ptr_struct idt_ptr_t;
 
-typedef void (*k_idt_seted_handler)(registers_t registers);
+typedef void (*idt_seted_handler)(registers_t *registers);
 
-k_idt_seted_handler k_idt_get_handler(uint8_t i);
+idt_seted_handler idt_get_handler(uint8_t i);
+void idt_set_handler(uint8_t i, idt_seted_handler);
+void idt_unset_handler(uint8_t i);
 
-void k_idt_set_handler(uint8_t i, k_idt_seted_handler);
+void idt_init();
+void idt_add_entry(uint8_t index, void (*callback)(), uint16_t selector, uint8_t flags);
 
-void k_idt_unset_handler(uint8_t i);
-
-void k_init_idt();
-
-void k_idt_add_entry(uint8_t i, uint32_t base, uint16_t sel, uint8_t flags);
-
-extern void k_idt_flush(idt_ptr_t *idt_ptr);
+extern void idt_flush(idt_ptr_t *idt_ptr);
 
 #endif

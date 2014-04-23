@@ -18,29 +18,33 @@
 
 #include "arch/pit.h"
 #include "arch/idt.h"
-#include "io/serial.h"
+#include "arch/arch.h"
+
+#include "std/utils.h"
 
 uint32_t timer_ticks = 0;
 
-void k_timer_phase(uint32_t frequency)
+void timer_phase(uint32_t frequency)
 {
   uint32_t divisor = 1193180 / frequency;
-  k_outb(0x43, 0x36);
+  outb(0x43, 0x36);
 
   uint8_t l = (uint8_t)(divisor & 0xFF);
   uint8_t h = (uint8_t)((divisor>>8) & 0xFF);
 
-  k_outb(0x40, l);
-  k_outb(0x40, h);
+  outb(0x40, l);
+  outb(0x40, h);
 }
 
-void k_timer_handler(registers_t registers)
+void timer_handler(registers_t *registers)
 {
+  UNUSED(registers);
+
   timer_ticks++;
 }
 
-void k_init_timer()
+void timer_init()
 {
-  k_timer_phase(50);
-  k_idt_set_handler(0, k_timer_handler);
+  timer_phase(50);
+  idt_set_handler(0, timer_handler);
 }

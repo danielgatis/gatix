@@ -16,11 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_panic_h_
-#define _std_panic_h_
+#include "std/logging.h"
+#include "std/types.h"
+#include "std/utils.h"
+#include "std/string.h"
+#include "std/vsprintf.h"
 
-void k_panic(char *msg);
+static device_t *vga_driver;
 
-void k_print_stack_trace();
+void logging_init(device_t *vga)
+{
+  vga_driver = vga;
+}
 
-#endif
+int kprintf(log_level_t level, const char *fmt, ...)
+{
+  UNUSED(level);
+
+  char buf[1024];
+  va_list args;
+  int n = 0;
+
+  va_start(args, fmt);
+  n = vsprintf(buf, fmt, args);
+  va_end(args);
+
+  vga_driver->write((uint8_t *)buf, strlen(buf));
+
+  return n;
+}

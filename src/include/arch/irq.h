@@ -16,32 +16,32 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _int_irq_h_
-#define _int_irq_h_
+#ifndef _arch_irq_h_
+#define _arch_irq_h_
 
 #include "std/types.h"
 
-extern void k_irq0();
-extern void k_irq1();
-extern void k_irq2();
-extern void k_irq3();
-extern void k_irq4();
-extern void k_irq5();
-extern void k_irq6();
-extern void k_irq7();
-extern void k_irq8();
-extern void k_irq9();
-extern void k_irq10();
-extern void k_irq11();
-extern void k_irq12();
-extern void k_irq13();
-extern void k_irq14();
-extern void k_irq15();
+#define IRQ(x) ((x) + 0x20)
 
-void k_irq_remap();
+extern void irq0();
+extern void irq1();
+extern void irq2();
+extern void irq3();
+extern void irq4();
+extern void irq5();
+extern void irq6();
+extern void irq7();
+extern void irq8();
+extern void irq9();
+extern void irq10();
+extern void irq11();
+extern void irq12();
+extern void irq13();
+extern void irq14();
+extern void irq15();
 
-void k_irq_handler(registers_t registers);
-
-void k_init_irq();
+void irq_remap();
+void irq_handler(registers_t *registers);
+void irq_init(uint16_t kcode);
 
 #endif

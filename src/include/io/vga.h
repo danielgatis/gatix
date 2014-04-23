@@ -16,11 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_memory_h
-#define _std_memory_h
+#ifndef _io_vga_h_
+#define _io_vga_h_
 
 #include "std/types.h"
 
-void memset(void *dest, uint32_t value, uint32_t size);
+device_t *vga_init();
+
+void vga_clear();
+void vga_scroll();
+
+void vga_print_char(const char c);
+void vga_print_dec(const uint32_t value);
+void vga_print_hex(const uint32_t value);
+void vga_print_str(const char *str);
+
+void vga_get_cursor_pos(uint16_t *xpos, uint16_t *ypos);
+void vga_set_cursor_pos(uint16_t xpos, uint16_t ypos);
+void vga_set_attribute(const uint16_t attr);
+
+size_t vga_write(uint8_t *data, size_t len);
 
 #endif

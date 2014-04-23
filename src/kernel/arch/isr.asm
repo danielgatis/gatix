@@ -1,20 +1,20 @@
 bits 32
 
 %macro ISR_NOERRCODE 1
-  global k_isr%1
-  k_isr%1:
+  global isr%1
+  isr%1:
     cli
     push byte 0
     push byte %1
-    jmp k_isr_stub
+    jmp isr_stub
 %endmacro
 
 %macro ISR_ERRCODE 1
-  global k_isr%1
-  k_isr%1:
+  global isr%1
+  isr%1:
     cli
     push byte %1
-    jmp k_isr_stub
+    jmp isr_stub
 %endmacro
 
 ISR_NOERRCODE 0
@@ -50,28 +50,32 @@ ISR_NOERRCODE 29
 ISR_NOERRCODE 30
 ISR_NOERRCODE 31
 
-extern k_isr_handler
-k_isr_stub:
+extern isr_handler
+isr_stub:
   pusha
+  push ds
+  push es
+  push fs
+  push gs
 
-  mov ax, ds
+  mov  ax, 0x10
+  mov  ds, ax
+  mov  es, ax
+  mov  fs, ax
+  mov  gs, ax
+
+  mov  eax, esp
   push eax
 
-  mov ax, 0x10
-  mov ds, ax
-  mov es, ax
-  mov fs, ax
-  mov gs, ax
+  mov  eax, isr_handler
+  call eax
 
-  call k_isr_handler
-
-  pop eax
-  mov ds, bx
-  mov es, bx
-  mov fs, bx
-  mov gs, bx
-
+  pop  eax
+  pop  gs
+  pop  fs
+  pop  es
+  pop  ds
   popa
-  add esp, 8
+  add  esp, 8
   sti
   iret

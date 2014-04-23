@@ -16,14 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_io_h
-#define _std_io_h
+#ifndef _std_logging_h
+#define _std_logging_h
 
-#include "std/types.h"
+typedef enum
+{
+    DEBUG = 0,      /* debug information */
+    INFO,           /* unimportant */
+    NOTICE,         /* important, but not bad */
+    WARNING,        /* not what was expected, but still okay */
+    ERROR,          /* this is bad... */
+    CRITICAL        /* fatal error */
+} log_level_t;
 
-void k_outb(uint16_t port, uint8_t value);
-uint8_t k_inb(uint16_t port);
+void logging_init();
 
-uint16_t k_inw(uint16_t port);
+int kprintf(log_level_t level, const char *fmt, ...);
 
 #endif

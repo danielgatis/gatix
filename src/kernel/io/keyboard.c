@@ -17,9 +17,13 @@
  */
 
 #include "io/keyboard.h"
-#include "io/monitor.h"
-#include "io/serial.h"
+#include "io/vga.h"
+
+#include "arch/arch.h"
 #include "arch/idt.h"
+
+#include "std/utils.h"
+#include "std/logging.h"
 
 unsigned char kbdus[128] =
 {
@@ -58,9 +62,11 @@ unsigned char kbdus[128] =
 };
 
 
-void k_keyboard_handler(registers_t registers)
+void keyboard_handler(registers_t *registers)
 {
-  unsigned char scancode = k_inb(0x60);
+  UNUSED(registers);
+
+  unsigned char scancode = inb(0x60);
 
   if (scancode & 0x80)
   {
@@ -68,11 +74,11 @@ void k_keyboard_handler(registers_t registers)
   }
   else
   {
-    k_monitor_puts_c(kbdus[scancode]);
+    kprintf(INFO, "Key %c pressed\n", kbdus[scancode]);
   }
 }
 
-void k_init_keyboard()
+void keyboard_init()
 {
-  k_idt_set_handler(1, k_keyboard_handler);
+  idt_set_handler(1, keyboard_handler);
 }

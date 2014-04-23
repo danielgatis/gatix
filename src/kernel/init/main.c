@@ -16,36 +16,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "std/elf.h"
 #include "init/multiboot.h"
-#include "io/monitor.h"
+
+#include "io/vga.h"
 #include "io/keyboard.h"
+
+#include "std/types.h"
+#include "std/utils.h"
+#include "std/logging.h"
+
 #include "arch/gdt.h"
 #include "arch/idt.h"
 #include "arch/isr.h"
 #include "arch/irq.h"
 #include "arch/pit.h"
 
-elf_t kernel_elf;
-extern uint32_t end;
+static device_t *vga_driver;
+static gdt_entries_t gdt_entries;
 
-int k_main(multiboot_info_t *mboot_ptr)
+int kernel_main(multiboot_info_t *mboot_ptr, uint32_t kernel_size)
 {
-  k_init_monitor();
+  UNUSED(kernel_size);
+  UNUSED(mboot_ptr);
 
-  kernel_elf = elf_from_multiboot(mboot_ptr);
+  vga_driver = vga_init();
+  logging_init(vga_driver);
 
-  k_init_gdt();
-  k_init_idt();
+  kprintf(INFO, "GDT\n");
+  gdt_entries = gdt_init();
 
-  k_init_isr();
-  k_init_irq();
+  kprintf(INFO, "IDT\n");
+  idt_init();
 
-  k_monitor_puts_s("PIT\n");
-  k_init_timer();
+  kprintf(INFO, "ISR\n");
+  isr_init(gdt_entries.kcode);
 
-  k_monitor_puts_s("KBD\n");
-  k_init_keyboard();
+  kprintf(INFO, "IRQ\n");
+  irq_init(gdt_entries.kcode);
+
+  kprintf(INFO, "PIT\n");
+  timer_init();
+
+  kprintf(INFO, "KBD\n");
+  keyboard_init();
 
   __asm__ __volatile__("sti");
 

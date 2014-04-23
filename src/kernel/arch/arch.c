@@ -16,16 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "std/memory.h"
+#include "arch/arch.h"
 
-void memset(void *dest, uint32_t value, uint32_t size)
+void outb(uint16_t port, uint8_t value)
 {
-	if (size) {
-  	char *dest = dest;
- 		do
- 		{
-    	*dest++ = value;
-    }
-    while (--size);
-  }
+  __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (value));
+}
+
+uint8_t inb(uint16_t port)
+{
+  uint8_t ret;
+  __asm__ __volatile__ ("inb %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
+}
+
+uint16_t inw(uint16_t port)
+{
+  uint16_t ret;
+  __asm__ __volatile__ ("inw %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
 }

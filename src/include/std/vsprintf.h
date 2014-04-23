@@ -16,23 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "io/serial.h"
+#ifndef _std_vsprintf_h
+#define _std_vsprintf_h
 
-void k_outb(uint16_t port, uint8_t value)
-{
-  __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (value));
-}
+#include "std/stdarg.h"
 
-uint8_t k_inb(uint16_t port)
-{
-  uint8_t ret;
-  __asm__ __volatile__ ("inb %1, %0" : "=a" (ret) : "dN" (port));
-  return ret;
-}
+int vsprintf(char *s, const char *fmt, va_list arg);
+int sprintf(char *buf, const char *fmt, ...);
 
-uint16_t k_inw(uint16_t port)
-{
-  uint16_t ret;
-  __asm__ __volatile__ ("inw %1, %0" : "=a" (ret) : "dN" (port));
-  return ret;
-}
+#endif

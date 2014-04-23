@@ -14,6 +14,14 @@
 ; You should have received a copy of the GNU General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+bits 32
+
+global _start
+
+extern kernel_main
+extern kernel_start
+extern kernel_end
+
 MBALIGN     equ  1<<0
 MEMINFO     equ  1<<1
 FLAGS       equ  MBALIGN | MEMINFO
@@ -22,30 +30,42 @@ CHECKSUM    equ -(MAGIC + FLAGS)
 
 section .multiboot
 align 4
-  dd MAGIC
-  dd FLAGS
-  dd CHECKSUM
+  dd  MAGIC
+  dd  FLAGS
+  dd  CHECKSUM
 
 section .bootstrap_stack
 align 4
 stack_bottom:
-times 16384 db 0 ; 16K
+times   16384 db 0 ; 16K
 stack_top:
 
 section .text
-global _start
 _start:
-  mov esp, stack_top
-  push ebx
-  mov ebp, 0
+  mov  ax, 0x10
+  mov  ds, ax
+  mov  es, ax
+  mov  fs, ax
+  mov  gs, ax
 
-  extern k_main
-  call k_main
-
+  ; disable interruptions
   cli
 
-.hang:
-  hlt
-  jmp .hang
+  ; calculate kernel size
+  mov   ecx, kernel_end
+  sub   ecx, kernel_start
 
-.end:
+  ; init stack
+  mov   esp, stack_top
+
+  ; call main
+  push  ebx           ; multiboot info
+  push  ecx           ; kernel size
+  call  kernel_main   ; main function
+
+  ; disable interruptions
+  cli
+
+.the_end:
+  hlt
+  jmp   .the_end

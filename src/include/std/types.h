@@ -19,17 +19,28 @@
 #ifndef _std_types_h
 #define _std_types_h
 
-#define K_4K 0x1000
-#define K_1M 0x100000
-
 #include <stdint.h>
 
-typedef struct registers
+#define NULL ((void *)0ul)
+
+typedef unsigned int uintptr_t;
+typedef unsigned int addr_t;
+typedef unsigned int size_t;
+
+typedef struct
 {
-  uint32_t ds;
-  uint32_t edi, esi, ebp, useless_value, ebx, edx, ecx, eax;
+  size_t (*read) (uint8_t *data, size_t len);
+  size_t (*write)(uint8_t *data, size_t len);
+} device_t;
+
+typedef device_t *(driver_init)(void);
+
+typedef struct
+{
+  uint32_t gs, fs, es, ds;
+  uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax;
   uint32_t int_no, err_code;
-  uint32_t eip, cs, eflags, esp, ss;
+  uint32_t eip, cs, eflags, useresp, ss;
 } registers_t;
 
 #endif

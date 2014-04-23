@@ -1,7 +1,7 @@
 bits 32
 
-global k_gdt_flush
-k_gdt_flush:
+global gdt_flush
+gdt_flush:
   mov eax, [esp+4]
   lgdt [eax]
 

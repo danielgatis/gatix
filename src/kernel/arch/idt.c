@@ -17,45 +17,47 @@
  */
 
 #include "arch/idt.h"
-#include "io/monitor.h"
-#include "std/memory.h"
+#include "io/vga.h"
+#include "std/string.h"
 
-idt_entry_t idt[256];
+idt_entry_t idt[IDT_NUM_ENTRIES];
 idt_ptr_t idt_ptr;
-k_idt_seted_handler handlers[16] = {
+idt_seted_handler handlers[16] = {
   0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0
 };
 
-void k_idt_set_handler(uint8_t i, k_idt_seted_handler handler)
+void idt_set_handler(uint8_t i, idt_seted_handler handler)
 {
   handlers[i] = handler;
 }
 
-k_idt_seted_handler k_idt_get_handler(uint8_t i)
+idt_seted_handler idt_get_handler(uint8_t i)
 {
   return handlers[i];
 }
 
-void k_idt_unset_handler(uint8_t i)
+void idt_unset_handler(uint8_t i)
 {
   handlers[i] = 0;
 }
 
-void k_idt_add_entry(uint8_t i, uint32_t base, uint16_t sel, uint8_t flags)
+void idt_add_entry(uint8_t index, void (*callback)(), uint16_t selector, uint8_t flags)
 {
-  idt[i].base_lo = base & 0xFFFF;
-  idt[i].base_hi = (base >> 16) & 0xFFFF;
+  uint32_t base = (uint32_t)callback;
 
-  idt[i].sel = sel;
-  idt[i].always0 = 0;
-  idt[i].flags = flags;
+  idt[index].base_lo = base & 0xFFFF;
+  idt[index].base_hi = (base >> 16) & 0xFFFF;
+
+  idt[index].selector = selector;
+  idt[index].always0 = 0;
+  idt[index].flags = flags;
 }
 
-void k_init_idt()
+void idt_init()
 {
-  idt_ptr.limit = sizeof(idt_entry_t) * 256 - 1;
+  idt_ptr.limit = sizeof(idt_entry_t) * IDT_NUM_ENTRIES - 1;
   idt_ptr.base = (uint32_t)&idt;
-  memset((void *)&idt, 0, sizeof(idt_entry_t) * 256);
-  k_idt_flush(&idt_ptr);
+  memset((void *)&idt, 0, sizeof(idt_entry_t) * IDT_NUM_ENTRIES);
+  idt_flush(&idt_ptr);
 }

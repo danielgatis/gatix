@@ -16,35 +16,66 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _desc_gdt_h_
-#define _desc_gdt_h_
+#ifndef _arch_gdt_h_
+#define _arch_gdt_h_
 
 #include "std/types.h"
 
-struct gdt_entry_struct
+#define GDT_NUM_ENTRIES         5
+#define GDT_ACCESS_ACCESSED     (0x01 << 0) /* accessed bit (set to 0, the cpu sets this to 1 when the segment is accessed) */
+#define GDT_ACCESS_RW           (0x01 << 1) /* readable bit for code selector, writable bit for data selector */
+#define GDT_ACCESS_DC           (0x01 << 2) /* direction/conforming bit */
+#define GDT_ACCESS_EXECUTE      (0x01 << 3) /* executable bit (1 for code selector, 0 for data selector) */
+#define GDT_ACCESS_ALWAYS1      (0x01 << 4) /* descriptor type (0 for system, 1 for code/data) */
+#define GDT_ACCESS_RING0        (0x00 << 5)
+#define GDT_ACCESS_RING1        (0x01 << 5)
+#define GDT_ACCESS_RING2        (0x02 << 5)
+#define GDT_ACCESS_RING3        (0x03 << 5)
+#define GDT_ACCESS_PRESENT      (0x01 << 7)
+
+#define GDT_FLAG_32BIT          (0x01 << 6) /* operation size (0 for 16 bit, 1 for 32) */
+#define GDT_FLAG_GRANULARITY    (0x01 << 7) /* granularity (0 for 1B-1MB, 1 for 4KB-4GB) */
+
+#define ACCESS_KCODE (GDT_ACCESS_PRESENT | GDT_ACCESS_RING0 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW | GDT_ACCESS_EXECUTE)
+#define ACCESS_UCODE (GDT_ACCESS_PRESENT | GDT_ACCESS_RING3 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW | GDT_ACCESS_EXECUTE)
+#define ACCESS_KDATA (GDT_ACCESS_PRESENT | GDT_ACCESS_RING0 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW)
+#define ACCESS_UDATA (GDT_ACCESS_PRESENT | GDT_ACCESS_RING3 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW)
+#define GDT_FLAGS    (GDT_FLAG_GRANULARITY | GDT_FLAG_32BIT)
+
+typedef enum
+{
+  GDT_INDEX_KCODE = 0x01,
+  GDT_INDEX_KDATA = 0x02,
+  GDT_INDEX_UCODE = 0x03,
+  GDT_INDEX_UDATA = 0x04
+} gdt_index_t;
+
+typedef struct
+{
+  uint16_t kcode;
+  uint16_t ucode;
+  uint16_t kdata;
+  uint16_t udata;
+} gdt_entries_t;
+
+typedef struct
 {
   uint16_t limit_low;
   uint16_t base_low;
   uint8_t  base_middle;
   uint8_t  access;
-  uint8_t  granularity;
+  uint8_t  flags;
   uint8_t  base_high;
-} __attribute__((packed));
+} __attribute__((packed)) gdt_entry_t;
 
-typedef struct gdt_entry_struct gdt_entry_t;
-
-struct gdt_ptr_struct
+typedef struct
 {
   uint16_t limit;
   uint32_t base;
-} __attribute__((packed));
+} __attribute__((packed)) gdt_ptr_t;
 
-typedef struct gdt_ptr_struct gdt_ptr_t;
-
-void k_init_gdt();
-
-void k_gdt_add_entry(int32_t i, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity);
-
-extern void k_gdt_flush(gdt_ptr_t *gdt_ptr);
+gdt_entries_t gdt_init();
+uint16_t gdt_add_entry(gdt_index_t index, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags);
+extern void gdt_flush(gdt_ptr_t *gdt_ptr);
 
 #endif

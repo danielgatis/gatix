@@ -18,32 +18,33 @@
 
 #include "arch/gdt.h"
 
-gdt_entry_t gdt_entries[5];
+gdt_entry_t gdt_entries[GDT_NUM_ENTRIES];
 gdt_ptr_t gdt_ptr;
 
-void k_gdt_add_entry(int32_t i, uint32_t base, uint32_t limit, uint8_t access, uint8_t granularity)
+uint16_t gdt_add_entry(gdt_index_t index, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags)
 {
-  gdt_entries[i].base_low = (base & 0xFFFF);
-  gdt_entries[i].base_middle = (base >> 16) & 0xFF;
-  gdt_entries[i].base_high = (base >> 24) & 0xFF;
+  gdt_entries[index].base_low = base & 0xFFFF;
+  gdt_entries[index].base_middle = (base >> 16) & 0xFF;
+  gdt_entries[index].base_high = (base >> 24) & 0xFF;
+  gdt_entries[index].limit_low = limit & 0xFFFF;
+  gdt_entries[index].flags = (flags & 0xf0) | ((limit >> 16) & 0x0f);
+  gdt_entries[index].access = access;
 
-  gdt_entries[i].limit_low = (limit & 0xFFFF);
-  gdt_entries[i].granularity = (limit >> 16) & 0x0F;
-
-  gdt_entries[i].granularity |= granularity & 0xF0;
-  gdt_entries[i].access = access;
+  return (sizeof(gdt_entry_t) * index) | ((access >> 5) & 0x03);
 }
 
-void k_init_gdt()
+gdt_entries_t gdt_init()
 {
-  gdt_ptr.limit = (sizeof(gdt_entry_t) * 5) - 1;
+  gdt_ptr.limit = (sizeof(gdt_entry_t) * GDT_NUM_ENTRIES) - 1;
   gdt_ptr.base  = (int32_t)&gdt_entries;
 
-  k_gdt_add_entry(0, 0, 0, 0, 0);
-  k_gdt_add_entry(1, 0, 0xFFFFFFFF, 0x9A, 0xCF);
-  k_gdt_add_entry(2, 0, 0xFFFFFFFF, 0x92, 0xCF);
-  k_gdt_add_entry(3, 0, 0xFFFFFFFF, 0xFA, 0xCF);
-  k_gdt_add_entry(4, 0, 0xFFFFFFFF, 0xF2, 0xCF);
+  gdt_entries_t entries;
+  entries.kcode = gdt_add_entry(GDT_INDEX_KCODE, 0x00000000, 0xffffffff, ACCESS_KCODE, GDT_FLAGS);
+  entries.ucode = gdt_add_entry(GDT_INDEX_UCODE, 0x00000000, 0xffffffff, ACCESS_UCODE, GDT_FLAGS);
+  entries.kdata = gdt_add_entry(GDT_INDEX_KDATA, 0x00000000, 0xffffffff, ACCESS_KDATA, GDT_FLAGS);
+  entries.udata = gdt_add_entry(GDT_INDEX_UDATA, 0x00000000, 0xffffffff, ACCESS_UDATA, GDT_FLAGS);
 
-  k_gdt_flush(&gdt_ptr);
+  gdt_flush(&gdt_ptr);
+
+  return entries;
 }
