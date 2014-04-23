@@ -30,17 +30,20 @@ elf_t elf_from_multiboot(multiboot_info_t *mb)
   for (uint32_t i = 0; i < elf_sec->num; i++)
   {
     char *name = (char *) (shstrtab + sh[i].name);
+
     if (!strcmp (name, ".strtab"))
     {
       elf.strtab = (char *)sh[i].addr;
       elf.strtabsz = sh[i].size;
     }
+
     if (!strcmp (name, ".symtab"))
     {
       elf.symtab = (elf_symbol_t*)sh[i].addr;
       elf.symtabsz = sh[i].size;
     }
   }
+
   return elf;
 }
 

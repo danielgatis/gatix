@@ -25,28 +25,21 @@
 #include "int/isr.h"
 #include "int/irq.h"
 #include "sys/pit.h"
-#include "mm/pmm.h"
 
 elf_t kernel_elf;
+extern uint32_t end;
 
 int k_main(multiboot_info_t *mboot_ptr)
 {
+  k_init_monitor();
+
   kernel_elf = elf_from_multiboot(mboot_ptr);
 
   k_init_gdt();
   k_init_idt();
 
-  k_init_monitor();
-
   k_init_isr();
   k_init_irq();
-
-  k_monitor_puts_hex(mboot_ptr->mem_upper);
-  k_monitor_puts_s("\n");
-  k_monitor_puts_dec(mboot_ptr->mmap_length);
-  k_monitor_puts_s("\n");
-
-  k_init_pmm(mboot_ptr->mem_upper, mboot_ptr->mmap_length);
 
   k_monitor_puts_s("PIT\n");
   k_init_timer();

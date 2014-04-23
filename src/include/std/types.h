@@ -19,8 +19,8 @@
 #ifndef _std_types_h
 #define _std_types_h
 
-#define K_4KB 0x1000
-#define K_1MB 0x100000
+#define K_4K 0x1000
+#define K_1M 0x100000
 
 #include <stdint.h>
 

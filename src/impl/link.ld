@@ -27,13 +27,9 @@ SECTIONS
     *(.text)
   }
 
-  .rodata BLOCK(4K) : ALIGN(4K)
-  {
-    *(.rodata)
-  }
-
   .data BLOCK(4K) : ALIGN(4K)
   {
+    *(.rodata)
     *(.data)
   }
 
@@ -43,4 +39,6 @@ SECTIONS
     *(.bss)
     *(.bootstrap_stack)
   }
+
+  end = .; _end = .; __end = .;
 }
