@@ -143,16 +143,7 @@ void vga_print_str(const char *str)
 {
   while (*str)
   {
-    /* detect color attributes like \033\007 */
-    if (*str == '\033')
-    {
-      vga_set_attribute(*++str << 8);
-      ++str;
-    }
-    else 
-    {
-      vga_print_char(*str++);
-    }
+    vga_print_char(*str++);
   }
 }
 
@@ -215,7 +206,7 @@ size_t vga_write(uint8_t *data, size_t len)
       ++i;
       vga_set_attribute(*data << 8);
     }
-    else 
+    else
     {
       vga_print_char((const char)*data);
     }

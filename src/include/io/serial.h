@@ -16,24 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_logging_h
-#define _std_logging_h
+#ifndef _io_serial_h_
+#define _io_serial_h_
 
 #include "std/types.h"
 
-typedef enum
-{
-  DEBUG = 0,      /* debug information */
-  INFO,           /* unimportant */
-  NOTICE,         /* important, but not bad */
-  WARNING,        /* not what was expected, but still okay */
-  ERROR,          /* this is bad... */
-  CRITICAL        /* fatal error */
-} log_level_t;
-
-
-void logging_init(device_t *vga, device_t *serial);
-
-int kprintf(log_level_t level, const char *fmt, ...);
+device_t *serial_init(void);
+void serial_terminate(void);
+size_t write(uint8_t *data, size_t len);
 
 #endif

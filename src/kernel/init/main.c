@@ -19,6 +19,7 @@
 #include "init/multiboot.h"
 
 #include "io/vga.h"
+#include "io/serial.h"
 #include "io/keyboard.h"
 
 #include "std/types.h"
@@ -31,33 +32,38 @@
 #include "arch/irq.h"
 #include "arch/pit.h"
 
+#include "mm/pmm.h"
+
 static device_t *vga_driver;
+static device_t *serial_driver;
+
 static gdt_entries_t gdt_entries;
 
 int kernel_main(multiboot_info_t *mboot_ptr, uint32_t kernel_size)
 {
-  UNUSED(kernel_size);
-  UNUSED(mboot_ptr);
-
   vga_driver = vga_init();
-  logging_init(vga_driver);
+  serial_driver = serial_init();
+  logging_init(vga_driver, serial_driver);
 
-  kprintf("GDT\n");
+  kprintf(DEBUG, "GDT\n");
   gdt_entries = gdt_init();
 
-  kprintf("IDT\n");
+  kprintf(DEBUG, "IDT\n");
   idt_init();
 
-  kprintf("ISR\n");
+  kprintf(DEBUG, "ISR\n");
   isr_init(gdt_entries.kcode);
 
-  kprintf("IRQ\n");
+  kprintf(DEBUG, "IRQ\n");
   irq_init(gdt_entries.kcode);
 
-  kprintf("PIT\n");
+  kprintf(DEBUG, "PMM\n");
+  pmm_init(mboot_ptr, (mboot_ptr->mem_upper + mboot_ptr->mem_lower) * 1024, kernel_size);
+
+  kprintf(DEBUG, "PIT\n");
   timer_init();
 
-  kprintf("KBD\n");
+  kprintf(DEBUG, "KBD\n");
   keyboard_init();
 
   __asm__ __volatile__("sti");

@@ -16,24 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_logging_h
-#define _std_logging_h
+#ifndef _mm_pmm_h
+#define _mm_pmm_h
 
+#include "init/multiboot.h"
 #include "std/types.h"
 
-typedef enum
-{
-  DEBUG = 0,      /* debug information */
-  INFO,           /* unimportant */
-  NOTICE,         /* important, but not bad */
-  WARNING,        /* not what was expected, but still okay */
-  ERROR,          /* this is bad... */
-  CRITICAL        /* fatal error */
-} log_level_t;
+#define BLOCK_SIZE 0x1000
 
+void pmm_init(multiboot_info_t* mbi, size_t mem_size, size_t kernel_size);
 
-void logging_init(device_t *vga, device_t *serial);
+addr_t pmm_alloc_block();
+void pmm_free_block(addr_t addr);
 
-int kprintf(log_level_t level, const char *fmt, ...);
+uint32_t pmm_num_free_blocks();
+uint32_t pmm_num_used_blocks();
+uint32_t pmm_memory_size();
 
 #endif

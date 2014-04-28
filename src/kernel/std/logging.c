@@ -23,13 +23,15 @@
 #include "std/vsprintf.h"
 
 static device_t *vga_driver;
+static device_t *serial_driver;
 
-void logging_init(device_t *vga)
+void logging_init(device_t *vga, device_t *serial)
 {
   vga_driver = vga;
+  serial_driver = serial;
 }
 
-int kprintf(const char *fmt, ...)
+int kprintf(log_level_t level, const char *fmt, ...)
 {
   char buf[1024];
   va_list args;
@@ -39,7 +41,10 @@ int kprintf(const char *fmt, ...)
   n = vsprintf(buf, fmt, args);
   va_end(args);
 
-  vga_driver->write((uint8_t *)buf, strlen(buf));
+  serial_driver->write((uint8_t *)buf, strlen(buf));
+
+  if (level >= INFO)
+    vga_driver->write((uint8_t *)buf, strlen(buf));
 
   return n;
 }
