@@ -39,8 +39,16 @@ static device_t *serial_driver;
 
 static gdt_entries_t gdt_entries;
 
+void print_mmap(const multiboot_info_t *mboot_ptr)
+{
+  kprintf(INFO, "Lower memory: %u - Upper memory: %u\n", mboot_ptr->mem_lower, mboot_ptr->mem_upper);
+  kprintf(INFO, "\n");
+}
+
 int kernel_main(multiboot_info_t *mboot_ptr, uint32_t kernel_size)
 {
+  UNUSED(kernel_size);
+
   vga_driver = vga_init();
   serial_driver = serial_init();
   logging_init(vga_driver, serial_driver);
@@ -58,7 +66,10 @@ int kernel_main(multiboot_info_t *mboot_ptr, uint32_t kernel_size)
   irq_init(gdt_entries.kcode);
 
   kprintf(DEBUG, "PMM\n");
-  pmm_init(mboot_ptr, (mboot_ptr->mem_upper + mboot_ptr->mem_lower) * 1024, kernel_size);
+  print_mmap(mboot_ptr);
+
+  // bug!
+  //pmm_init(mboot_ptr, (mboot_ptr->mem_upper + mboot_ptr->mem_lower) * 1024, kernel_size);
 
   kprintf(DEBUG, "PIT\n");
   timer_init();
@@ -72,3 +83,4 @@ int kernel_main(multiboot_info_t *mboot_ptr, uint32_t kernel_size)
 
   return 0xdeadbeef;
 }
+

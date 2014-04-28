@@ -109,7 +109,7 @@ void pmm_init(multiboot_info_t* mbi, size_t mem_size, size_t kernel_size)
   memsetw(frames, 0xffff, max_blocks / 16); /* 16 blocks per word */
 
   /* free available regions */
-  multiboot_memory_map_t * mmap = (multiboot_memory_map_t *)(mbi->mmap_addr);
+  multiboot_memory_map_t *mmap = (multiboot_memory_map_t *)mbi->mmap_addr;
 
   while ((uint32_t)mmap < mbi->mmap_addr + mbi->mmap_length)
   {
@@ -121,7 +121,7 @@ void pmm_init(multiboot_info_t* mbi, size_t mem_size, size_t kernel_size)
       clear_region(mmap->addr_low, mmap->len_low);
     }
 
-    mmap = (multiboot_memory_map_t*)((unsigned int)mmap + mmap->size + sizeof(unsigned int));
+    mmap = (multiboot_memory_map_t *)((uint32_t)mmap + mmap->size + sizeof(mmap->size));
   }
 
   /* reserve blocks for kernel and frames */
