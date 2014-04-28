@@ -42,22 +42,22 @@ int kernel_main(multiboot_info_t *mboot_ptr, uint32_t kernel_size)
   vga_driver = vga_init();
   logging_init(vga_driver);
 
-  kprintf(INFO, "GDT\n");
+  kprintf("GDT\n");
   gdt_entries = gdt_init();
 
-  kprintf(INFO, "IDT\n");
+  kprintf("IDT\n");
   idt_init();
 
-  kprintf(INFO, "ISR\n");
+  kprintf("ISR\n");
   isr_init(gdt_entries.kcode);
 
-  kprintf(INFO, "IRQ\n");
+  kprintf("IRQ\n");
   irq_init(gdt_entries.kcode);
 
-  kprintf(INFO, "PIT\n");
+  kprintf("PIT\n");
   timer_init();
 
-  kprintf(INFO, "KBD\n");
+  kprintf("KBD\n");
   keyboard_init();
 
   __asm__ __volatile__("sti");

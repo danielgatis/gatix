@@ -19,18 +19,9 @@
 #ifndef _std_logging_h
 #define _std_logging_h
 
-typedef enum
-{
-    DEBUG = 0,      /* debug information */
-    INFO,           /* unimportant */
-    NOTICE,         /* important, but not bad */
-    WARNING,        /* not what was expected, but still okay */
-    ERROR,          /* this is bad... */
-    CRITICAL        /* fatal error */
-} log_level_t;
 
 void logging_init();
 
-int kprintf(log_level_t level, const char *fmt, ...);
+int kprintf(const char *fmt, ...);
 
 #endif

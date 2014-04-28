@@ -149,7 +149,8 @@ void vga_print_str(const char *str)
       vga_set_attribute(*++str << 8);
       ++str;
     }
-    else {
+    else 
+    {
       vga_print_char(*str++);
     }
   }
@@ -214,8 +215,10 @@ size_t vga_write(uint8_t *data, size_t len)
       ++i;
       vga_set_attribute(*data << 8);
     }
-    else
+    else 
+    {
       vga_print_char((const char)*data);
+    }
   }
 
   return i;

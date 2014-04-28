@@ -55,13 +55,19 @@ long int strtol(const char *str, char **endptr, int base)
         base = 16;
       }
       else
+      {
         base = 8;
+      }
     }
     else
+    {
       base = 10;
+    }
   }
   else if (base == 16 && buf[0] == '0' && to_lower(buf[1]) == 'x')
+  {
     str += 2;
+  }
 
   /* parse alpha-numerical string */
   while (is_alnum(*buf))
@@ -72,7 +78,9 @@ long int strtol(const char *str, char **endptr, int base)
         break;
     }
     else
+    {
       k = *buf - '0';
+    }
 
     value = value * base + k;
     ++buf;

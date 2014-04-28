@@ -29,10 +29,8 @@ void logging_init(device_t *vga)
   vga_driver = vga;
 }
 
-int kprintf(log_level_t level, const char *fmt, ...)
+int kprintf(const char *fmt, ...)
 {
-  UNUSED(level);
-
   char buf[1024];
   va_list args;
   int n = 0;
