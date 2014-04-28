@@ -27,11 +27,11 @@ SECTIONS
   {
     *(.multiboot)
     *(.text)
+    *(.rodata*)
   }
 
   .data BLOCK(4K) : ALIGN(4K)
   {
-    *(.rodata)
     *(.data)
   }
 
