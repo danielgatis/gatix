@@ -21,19 +21,9 @@
 
 #include "std/types.h"
 
-typedef enum
-{
-  DEBUG = 0,      /* debug information */
-  INFO,           /* unimportant */
-  NOTICE,         /* important, but not bad */
-  WARNING,        /* not what was expected, but still okay */
-  ERROR,          /* this is bad... */
-  CRITICAL        /* fatal error */
-} log_level_t;
-
-
 void logging_init(device_t *vga, device_t *serial);
 
-int kprintf(log_level_t level, const char *fmt, ...);
+int kprintf(const char *fmt, ...);
+int kdebugf(const char *fmt, ...);
 
 #endif

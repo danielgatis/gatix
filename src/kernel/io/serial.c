@@ -89,14 +89,6 @@ device_t *serial_init(void)
   return &com_device;
 }
 
-void serial_terminate(void)
-{
-  const char *text_reset = "\033[0m";
-
-  while (*text_reset)
-    write_char(*text_reset++);
-}
-
 size_t write(uint8_t *data, size_t len)
 {
   size_t i;

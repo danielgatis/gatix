@@ -104,8 +104,8 @@ void isr_handler(registers_t *registers)
   }
   else
   {
-    kprintf(DEBUG, exception_messages[registers->int_no] + '\n');
-    kprintf(DEBUG, "Exception. System Halted!\n");
+    kprintf(exception_messages[registers->int_no] + '\n');
+    kprintf("Exception. System Halted!\n");
 
     __asm__ __volatile__ ("cli");
     __asm__ __volatile__ ("hlt");

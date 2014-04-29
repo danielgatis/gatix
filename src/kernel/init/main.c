@@ -32,50 +32,66 @@
 #include "arch/irq.h"
 #include "arch/pit.h"
 
-#include "mm/pmm.h"
-
 static device_t *vga_driver;
 static device_t *serial_driver;
 
 static gdt_entries_t gdt_entries;
 
-void print_mmap(const multiboot_info_t *mboot_ptr)
+void print_mboot(const multiboot_info_t *mboot_ptr)
 {
-  kprintf(INFO, "Lower memory: %u - Upper memory: %u\n", mboot_ptr->mem_lower, mboot_ptr->mem_upper);
-  kprintf(INFO, "\n");
+  kprintf("MULTIBOOT raw data:\n");
+  kprintf("Flags : 0x%x\n", mboot_ptr->flags);
+  kprintf("Mem Lo: 0x%x\n", mboot_ptr->mem_lower);
+  kprintf("Mem Hi: 0x%x\n", mboot_ptr->mem_upper);
+  kprintf("Boot d: 0x%x\n", mboot_ptr->boot_device);
+  kprintf("cmdlin: 0x%x\n", mboot_ptr->cmdline);
+  kprintf("Mods  : 0x%x\n", mboot_ptr->mods_count);
+  kprintf("Addr  : 0x%x\n", mboot_ptr->mods_addr);
+  kprintf("MMap  : 0x%x\n", mboot_ptr->mmap_length);
+  kprintf("Addr  : 0x%x\n", mboot_ptr->mmap_addr);
+  kprintf("Drives: 0x%x\n", mboot_ptr->drives_length);
+  kprintf("Addr  : 0x%x\n", mboot_ptr->drives_addr);
+  kprintf("Config: 0x%x\n", mboot_ptr->config_table);
+  kprintf("Loader: 0x%x\n", mboot_ptr->boot_loader_name);
+  kprintf("APM   : 0x%x\n", mboot_ptr->apm_table);
+  kprintf("VBE Co: 0x%x\n", mboot_ptr->vbe_control_info);
+  kprintf("VBE Mo: 0x%x\n", mboot_ptr->vbe_mode_info);
+  kprintf("VBE In: 0x%x\n", mboot_ptr->vbe_mode);
+  kprintf("VBE se: 0x%x\n", mboot_ptr->vbe_interface_seg);
+  kprintf("VBE of: 0x%x\n", mboot_ptr->vbe_interface_off);
+  kprintf("VBE le: 0x%x\n", mboot_ptr->vbe_interface_len);
+  kprintf("(End multiboot raw data)\n");
+  kprintf("Started with: %s\n", (char *)mboot_ptr->cmdline);
+  kprintf("Booted from: %s\n", (char *)mboot_ptr->boot_loader_name);
+  kprintf("%dkB lower memory\n", mboot_ptr->mem_lower);
+  kprintf("%dkB higher memory (%dMB)\n", mboot_ptr->mem_upper, mboot_ptr->mem_upper / 1024);
 }
 
-int kernel_main(multiboot_info_t *mboot_ptr, uint32_t kernel_size)
+int kernel_main(multiboot_info_t *mboot_ptr)
 {
-  UNUSED(kernel_size);
-
   vga_driver = vga_init();
   serial_driver = serial_init();
   logging_init(vga_driver, serial_driver);
 
-  kprintf(DEBUG, "GDT\n");
+  kdebugf("GDT\n");
   gdt_entries = gdt_init();
 
-  kprintf(DEBUG, "IDT\n");
+  kdebugf("IDT\n");
   idt_init();
 
-  kprintf(DEBUG, "ISR\n");
+  kdebugf("ISR\n");
   isr_init(gdt_entries.kcode);
 
-  kprintf(DEBUG, "IRQ\n");
+  kdebugf("IRQ\n");
   irq_init(gdt_entries.kcode);
 
-  kprintf(DEBUG, "PMM\n");
-  print_mmap(mboot_ptr);
-
-  // bug!
-  //pmm_init(mboot_ptr, (mboot_ptr->mem_upper + mboot_ptr->mem_lower) * 1024, kernel_size);
-
-  kprintf(DEBUG, "PIT\n");
+  kdebugf("PIT\n");
   timer_init();
 
-  kprintf(DEBUG, "KBD\n");
+  kdebugf("KBD\n");
   keyboard_init();
+
+  print_mboot(mboot_ptr);
 
   __asm__ __volatile__("sti");
 

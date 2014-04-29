@@ -16,12 +16,6 @@
 
 bits 32
 
-global _start
-
-extern kernel_main
-extern kernel_start
-extern kernel_end
-
 MBALIGN     equ  1<<0
 MEMINFO     equ  1<<1
 FLAGS       equ  MBALIGN | MEMINFO
@@ -41,31 +35,18 @@ times   16384 db 0 ; 16K
 stack_top:
 
 section .text
+extern kernel_main
+extern code, data, bss, end
+
+global _start
 _start:
-  mov  ax, 0x10
-  mov  ds, ax
-  mov  es, ax
-  mov  fs, ax
-  mov  gs, ax
-
-  ; disable interruptions
-  cli
-
-  ; calculate kernel size
-  mov   ecx, kernel_end
-  sub   ecx, kernel_start
-
   ; init stack
   mov   esp, stack_top
 
   ; call main
   push  ebx           ; multiboot info
-  push  ecx           ; kernel size
-  call  kernel_main   ; main function
 
   ; disable interruptions
   cli
-
-.the_end:
-  hlt
-  jmp   .the_end
+  call  kernel_main   ; main function
+  jmp   $

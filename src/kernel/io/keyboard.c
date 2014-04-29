@@ -74,7 +74,7 @@ void keyboard_handler(registers_t *registers)
   }
   else
   {
-    kprintf(DEBUG, "Key %c pressed\n", kbdus[scancode]);
+    kdebugf("Key %c pressed\n", kbdus[scancode]);
   }
 }
 

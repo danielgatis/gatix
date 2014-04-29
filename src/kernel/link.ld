@@ -16,33 +16,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+OUTPUT_FORMAT(elf32-i386)
 ENTRY(_start)
+phys = 0x00100000;
 SECTIONS
 {
-  . = 1M;
-
-  kernel_start = .;
-
-  .text BLOCK(4K) : ALIGN(4K)
-  {
-    *(.multiboot)
-    *(.text)
+  .text phys : AT(phys) {
+    code = .;
+    *(.multiboot*)
+    *(.text*)
     *(.rodata*)
+    . = ALIGN(4096);
   }
 
-  .data BLOCK(4K) : ALIGN(4K)
+
+  .data : AT(phys + (data - code))
   {
-    *(.data)
+    data = .;
+    *(.data*)
+    PROVIDE(kernel_symbols_start = .);
+    PROVIDE(kernel_symbols_end = .);
+    . = ALIGN(4096);
   }
 
-  .bss BLOCK(4K) : ALIGN(4K)
+  .bss : AT(phys + (bss - code))
   {
-    *(COMMON)
-    *(.bss)
-    *(.bootstrap_stack)
+    bss = .;
+    *(.bss*)
+    . = ALIGN(4096);
   }
 
-  kernel_end = .;
+  end = .;
 
   /DISCARD/ : {
     *(.comment)
