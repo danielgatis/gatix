@@ -26,3 +26,4 @@ On **root directory** run:
 ```bash
 sh scripts/run.sh
 ```
+warning virus
