@@ -34,8 +34,6 @@ SECTIONS
   {
     data = .;
     *(.data*)
-    PROVIDE(kernel_symbols_start = .);
-    PROVIDE(kernel_symbols_end = .);
     . = ALIGN(4096);
   }
 
