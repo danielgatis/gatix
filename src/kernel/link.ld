@@ -17,49 +17,31 @@
  */
 
 OUTPUT_FORMAT(elf32-i386)
-ENTRY(_start)
-phys = 0x00100000;
+ENTRY(loader_main)
 SECTIONS
 {
-  .text phys : AT(phys) {
-    code = .;
-    *(.multiboot*)
-    *(.text*)
+  . = 1M;
+
+  .text ALIGN(4K) :
+  {
+    *(.multiboot)
+    *(.text)
+  }
+
+  .rodata ALIGN(4K) :
+  {
     *(.rodata*)
-    . = ALIGN(4096);
   }
 
-
-  .data : AT(phys + (data - code))
+  .data ALIGN(4K) :
   {
-    data = .;
-    *(.data*)
-    . = ALIGN(4096);
+    *(.data)
   }
 
-  .bss : AT(phys + (bss - code))
+  .bss ALIGN(4K) :
   {
-    bss = .;
-    *(.bss*)
-    . = ALIGN(4096);
-  }
-
-  end = .;
-
-  /DISCARD/ : {
-    *(.comment)
-    *(.eh_frame)
-    *(.note.gnu.build-id)
-    *(.debug_abbrev)
-    *(.debug_info)
-    *(.debug_line)
-    *(.debug_loc)
-    *(.debug_pubnames)
-    *(.debug_aranges)
-    *(.debug_str)
-    *(.debug_macinfo)
-    *(.debug_ranges)
-    *(.stab)
-    *(.stabstr)
+    *(COMMON)
+    *(.bss)
+    *(.bootstrap_stack)
   }
 }
