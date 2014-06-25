@@ -17,7 +17,7 @@ git clone git://github.com/danielgatis/gatix.git
 
 On **root directory** run:
 ```bash
-cd build && camke .. && make
+cd build && cmake .. && make
 ```
 
 How can I run?
