@@ -84,7 +84,9 @@ device_t *serial_init(void)
   com_device.write = write;
 
   while (*init_message)
+  {
     write_char(*init_message++);
+  }
 
   return &com_device;
 }
@@ -93,8 +95,10 @@ size_t write(uint8_t *data, size_t len)
 {
   size_t i;
 
-  for (i = 0; *data && i < len; ++data, ++i)
+  for (i = 0; *data && i < len; ++data, ++i) 
+  {
     write_char(*data);
+  }
 
   return i;
 }

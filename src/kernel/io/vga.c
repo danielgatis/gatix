@@ -199,7 +199,9 @@ size_t vga_write(uint8_t *data, size_t len)
   size_t i;
 
   for (i = 0; *data && i < len; ++data, ++i)
+  {
     vga_print_char((const char)*data);
+  }
 
   return i;
 }

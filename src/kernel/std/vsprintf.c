@@ -39,10 +39,14 @@ static unsigned number(char *str, unsigned long num, unsigned base, int width, i
   unsigned res;
 
   if (flags & LEFT)
+  {
     flags &= ~ZEROS;
+  }
 
   if (base < 2 || base > 36)
+  {
     return 0;
+  }
 
   pad = (flags & ZEROS) ? '0' : ' ';
 
@@ -72,15 +76,21 @@ static unsigned number(char *str, unsigned long num, unsigned base, int width, i
   if (flags & PREFIX)
   {
     if (base == 16)
+    {
       width -= 2;
+    }
     else if (base == 8)
+    {
       --width;
+    }
   }
 
   /* write the number in reverse order to the temporary buffer. */
   i = 0;
   if (num == 0)
+  {
     buffer[i++] = '0';
+  }
   else
   {
     while (num != 0)
@@ -175,7 +185,9 @@ int vsprintf(char *buf, const char *fmt, va_list args)
   int width, precision;
 
   if (!buf || !fmt)
+  {
     return 0;
+  }
 
   for (i = 0; i <= strlen(fmt); ++i, ++loc)
   {
@@ -219,7 +231,9 @@ int vsprintf(char *buf, const char *fmt, va_list args)
       if (is_digit(fmt[i+1]))
       {
         for (k = 0; is_digit(fmt[i+1]); ++k)
+        {
           tmp[k] = fmt[++i];
+        }
 
         tmp[k] = 0;
         width = atoi(tmp);
@@ -244,7 +258,9 @@ int vsprintf(char *buf, const char *fmt, va_list args)
         if (is_digit(fmt[i+1]))
         {
           for (k = 0; is_digit(fmt[i+1]); ++k)
+          {
             tmp[k] = fmt[++i];
+          }
 
           tmp[k] = 0;
           precision = atoi(tmp);
@@ -255,7 +271,9 @@ int vsprintf(char *buf, const char *fmt, va_list args)
           ++i;
         }
         if (precision < 0)
+        {
           precision = 0;
+        }
       }
 
       /* get the length modifier */

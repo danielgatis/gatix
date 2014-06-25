@@ -26,11 +26,15 @@ long int strtol(const char *str, char **endptr, int base)
   int sign = 1, k = 0;
 
   if (base < 2 || base > 36)
+  {
     return 0;
+  }
 
   /* swallow white spaces */
   while (*buf == ' ' || *buf == '\t')
+  {
     ++buf;
+  }
 
   /* parse sign if any */
   if (*buf == '-')
@@ -72,10 +76,13 @@ long int strtol(const char *str, char **endptr, int base)
   /* parse alpha-numerical string */
   while (is_alnum(*buf))
   {
-    if (is_alpha(*buf)) {
+    if (is_alpha(*buf)) 
+    {
       k = to_lower(*buf) - 'a' + 10;
       if (k > base)
+      {
         break;
+      }
     }
     else
     {
@@ -87,7 +94,9 @@ long int strtol(const char *str, char **endptr, int base)
   }
 
   if (endptr != NULL)
+  {
     *endptr = (char *)buf;
+  }
 
   return sign * value;
 }
@@ -109,7 +118,8 @@ char *itoa(unsigned long value, char *str, int base)
   {
     *ptr++ = "0123456789abcdefghijklmnopqrstuvwxyz"[value % base];
     value /= base;
-  } while (value);
+  } 
+  while (value);
 
   *ptr-- = 0;
 
@@ -130,7 +140,9 @@ int atoi(char *str)
   int base = 10;
 
   while (*str == ' ')
+  {
     ++str;
+  }
 
   if (*str == '0')
   {
@@ -146,12 +158,18 @@ int atoi(char *str)
   while (*str)
   {
     if (*str == ' ')
+    {
       break;
+    }
 
     if (is_alpha(*str))
+    {
       k = to_lower(*str) - 'a' + 10;
+    }
     else
+    {
       k = *str - '0';
+    }
 
     n = n * base + k;
     ++str;
