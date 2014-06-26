@@ -21,6 +21,7 @@
 
 #include <stdint.h>
 
+#define KB_4 0x1000
 #define NULL ((void *)0ul)
 #define TRUE  1
 #define FALSE 0

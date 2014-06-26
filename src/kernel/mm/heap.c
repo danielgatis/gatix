@@ -16,36 +16,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-OUTPUT_FORMAT(elf32-i386)
-ENTRY(loader_main)
-SECTIONS
+#include "mm/heap.h"
+
+static addr_t heap_addr = 0;
+
+static addr_t kmalloc_internal(uint32_t size, bool align, addr_t *phys)
 {
-  . = 1M;
-
-  kernel_start = .;
-
-  .text ALIGN(4K) :
+  if (align == TRUE && (heap_addr & 0xFFFFF000))
   {
-    *(.multiboot)
-    *(.text)
+    heap_addr &= 0xFFFFF000;
+    heap_addr += KB_4;
   }
-
-  .rodata ALIGN(4K) :
+ 
+  if (phys)
   {
-    *(.rodata*)
+    *phys = heap_addr;
   }
+ 
+  addr_t tmp = heap_addr;
+  heap_addr += size;
+  return tmp;
+}
 
-  .data ALIGN(4K) :
-  {
-    *(.data)
-  }
+addr_t kmalloc_a(uint32_t size)
+{
+  return kmalloc_internal(size, 1, 0);
+}
 
-  .bss ALIGN(4K) :
-  {
-    *(COMMON)
-    *(.bss)
-    *(.bootstrap_stack)
-  }
+addr_t kmalloc_p(uint32_t size, addr_t *phys)
+{
+  return kmalloc_internal(size, 0, phys);
+}
 
-  kernel_end = .;
+addr_t kmalloc_ap(uint32_t size, addr_t *phys)
+{
+  return kmalloc_internal(size, 1, phys);
+}
+
+addr_t kmalloc(uint32_t size)
+{
+  return kmalloc_internal(size, 0, 0);
+}
+
+addr_t heap_init(addr_t addr) 
+{
+  heap_addr = addr;
+  return heap_addr;
 }

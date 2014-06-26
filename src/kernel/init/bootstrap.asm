@@ -25,6 +25,8 @@ CHECKSUM    equ -(MAGIC + FLAGS)
 global loader_main
 
 extern kernel_main
+extern kernel_start
+extern kernel_end
 
 section .multiboot
 align 4

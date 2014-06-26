@@ -16,36 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-OUTPUT_FORMAT(elf32-i386)
-ENTRY(loader_main)
-SECTIONS
-{
-  . = 1M;
+#ifndef _mm_heap_h
+#define _mm_heap_h
 
-  kernel_start = .;
+#include "std/types.h"
 
-  .text ALIGN(4K) :
-  {
-    *(.multiboot)
-    *(.text)
-  }
+addr_t heap_init(addr_t addr) ;
+addr_t kmalloc_a(uint32_t size);
+addr_t kmalloc_p(uint32_t size, addr_t *phys);
+addr_t kmalloc_ap(uint32_t size, addr_t *phys);
+addr_t kmalloc(uint32_t size);
 
-  .rodata ALIGN(4K) :
-  {
-    *(.rodata*)
-  }
-
-  .data ALIGN(4K) :
-  {
-    *(.data)
-  }
-
-  .bss ALIGN(4K) :
-  {
-    *(COMMON)
-    *(.bss)
-    *(.bootstrap_stack)
-  }
-
-  kernel_end = .;
-}
+#endif

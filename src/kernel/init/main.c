@@ -32,6 +32,11 @@
 #include "arch/irq.h"
 #include "arch/pit.h"
 
+#include "mm/heap.h"
+
+extern uint32_t kernel_start;
+extern uint32_t kernel_end;
+
 static device_t *vga_driver;
 static device_t *serial_driver;
 
@@ -84,6 +89,9 @@ int kernel_main(multiboot_info_t *mboot_ptr)
 
   kdebugf("IRQ\n");
   irq_init(gdt_entries.kcode);
+
+  kdebugf("HEAP\n");
+  heap_init((addr_t)&kernel_end);
 
   kdebugf("PIT\n");
   timer_init();
