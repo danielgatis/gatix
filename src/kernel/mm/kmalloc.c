@@ -16,25 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mm/heap.h"
+#include "mm/kmalloc.h"
 
-static addr_t heap_addr = 0;
+static addr_t placement_addr = 0;
 
 static addr_t kmalloc_internal(uint32_t size, bool align, addr_t *phys)
 {
-  if (align == TRUE && (heap_addr & 0xFFFFF000))
+  if (align == TRUE && (placement_addr & 0xFFFFF000))
   {
-    heap_addr &= 0xFFFFF000;
-    heap_addr += KB_4;
+    placement_addr &= 0xFFFFF000;
+    placement_addr += KB_4;
   }
  
   if (phys)
   {
-    *phys = heap_addr;
+    *phys = placement_addr;
   }
  
-  addr_t tmp = heap_addr;
-  heap_addr += size;
+  addr_t tmp = placement_addr;
+  placement_addr += size;
   return tmp;
 }
 
@@ -58,8 +58,8 @@ addr_t kmalloc(uint32_t size)
   return kmalloc_internal(size, 0, 0);
 }
 
-addr_t heap_init(addr_t addr) 
+addr_t kmalloc_init(addr_t addr) 
 {
-  heap_addr = addr;
-  return heap_addr;
+  placement_addr = addr;
+  return placement_addr;
 }

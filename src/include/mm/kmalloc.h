@@ -16,12 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _mm_heap_h
-#define _mm_heap_h
+#ifndef _mm_kmalloc_h
+#define _mm_kmalloc_h
 
 #include "std/types.h"
 
-addr_t heap_init(addr_t addr) ;
+addr_t kmalloc_init(addr_t addr) ;
 addr_t kmalloc_a(uint32_t size);
 addr_t kmalloc_p(uint32_t size, addr_t *phys);
 addr_t kmalloc_ap(uint32_t size, addr_t *phys);
