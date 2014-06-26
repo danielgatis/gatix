@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "io/serial.h"
+#include "drivers/serial.h"
 
 #include "arch/arch.h"
 

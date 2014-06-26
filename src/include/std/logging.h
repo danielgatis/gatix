@@ -24,6 +24,7 @@
 void logging_init(device_t *vga, device_t *serial);
 
 int kprintf(const char *fmt, ...);
+int panic(const char *fmt, ...);
 int kdebugf(const char *fmt, ...);
 
 #endif

@@ -17,7 +17,9 @@
  */
 
 #include "arch/idt.h"
-#include "io/vga.h"
+
+#include "drivers/vga.h"
+
 #include "std/string.h"
 
 idt_entry_t idt[IDT_NUM_ENTRIES];

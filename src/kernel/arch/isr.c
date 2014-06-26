@@ -18,7 +18,9 @@
 
 #include "arch/isr.h"
 #include "arch/idt.h"
-#include "io/vga.h"
+
+#include "drivers/vga.h"
+
 #include "std/logging.h"
 
 char *exception_messages[] =

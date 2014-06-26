@@ -16,13 +16,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _io_serial_h_
-#define _io_serial_h_
+#ifndef _drivers_vga_h_
+#define _drivers_vga_h_
 
 #include "std/types.h"
 
-device_t *serial_init(void);
-void serial_terminate(void);
-size_t write(uint8_t *data, size_t len);
+device_t *vga_init();
+
+void vga_clear();
+void vga_scroll();
+
+void vga_print_char(const char c);
+void vga_print_dec(const uint32_t value);
+void vga_print_hex(const uint32_t value);
+void vga_print_str(const char *str);
+
+void vga_get_cursor_pos(uint16_t *xpos, uint16_t *ypos);
+void vga_set_cursor_pos(uint16_t xpos, uint16_t ypos);
+void vga_set_attribute(const uint16_t attr);
+
+size_t vga_write(uint8_t *data, size_t len);
 
 #endif

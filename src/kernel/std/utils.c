@@ -17,7 +17,8 @@
  */
 
 #include "std/utils.h"
-#include "io/vga.h"
+ 
+#include "drivers/vga.h"
 
 long int strtol(const char *str, char **endptr, int base)
 {

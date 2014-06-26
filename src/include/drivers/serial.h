@@ -16,13 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _io_keyboard_h_
-#define _io_keyboard_h_
+#ifndef _drivers_serial_h_
+#define _drivers_serial_h_
 
 #include "std/types.h"
 
-void keyboard_handler(registers_t *registers);
-void keyboard_init();
+device_t *serial_init(void);
+void serial_terminate(void);
+size_t write(uint8_t *data, size_t len);
 
 #endif
-

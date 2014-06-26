@@ -31,6 +31,15 @@ void logging_init(device_t *vga, device_t *serial)
   serial_driver = serial;
 }
 
+int panic(const char *fmt, ...)
+{
+  va_list args;
+  va_start(args, fmt);
+  kprintf(fmt, args);
+  va_end(args);
+  for(;;);
+}
+
 int kdebugf(const char *fmt, ...)
 {
   char buf[1024];

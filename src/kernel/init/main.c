@@ -18,9 +18,9 @@
 
 #include "init/multiboot.h"
 
-#include "io/vga.h"
-#include "io/serial.h"
-#include "io/keyboard.h"
+#include "drivers/vga.h"
+#include "drivers/serial.h"
+#include "drivers/keyboard.h"
 
 #include "std/types.h"
 #include "std/utils.h"
@@ -63,7 +63,7 @@ void print_mboot(const multiboot_info_t *mboot_ptr)
   kprintf("(End multiboot raw data)\n");
   kprintf("Started with: %s\n", (char *)mboot_ptr->cmdline);
   kprintf("Booted from: %s\n", (char *)mboot_ptr->boot_loader_name);
-  kprintf("%dkB lower memory\n", mboot_ptr->mem_lower);
+  kprintf("%dkB lower memory (%dMB)\n", mboot_ptr->mem_lower, mboot_ptr->mem_lower / 1024);
   kprintf("%dkB higher memory (%dMB)\n", mboot_ptr->mem_upper, mboot_ptr->mem_upper / 1024);
 }
 

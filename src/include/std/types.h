@@ -22,7 +22,10 @@
 #include <stdint.h>
 
 #define NULL ((void *)0ul)
+#define TRUE  1
+#define FALSE 0
 
+typedef int bool;
 typedef unsigned int uintptr_t;
 typedef unsigned int addr_t;
 typedef unsigned int size_t;

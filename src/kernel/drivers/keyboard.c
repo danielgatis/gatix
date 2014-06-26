@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "io/keyboard.h"
-#include "io/vga.h"
+#include "drivers/keyboard.h"
+#include "drivers/vga.h"
 
 #include "arch/arch.h"
 #include "arch/idt.h"
