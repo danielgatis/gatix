@@ -23,8 +23,6 @@
 
 addr_t kmalloc_init(addr_t addr) ;
 addr_t kmalloc_a(uint32_t size);
-addr_t kmalloc_p(uint32_t size, addr_t *phys);
-addr_t kmalloc_ap(uint32_t size, addr_t *phys);
 addr_t kmalloc(uint32_t size);
 
 #endif

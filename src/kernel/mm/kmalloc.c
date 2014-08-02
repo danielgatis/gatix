@@ -20,19 +20,14 @@
 
 static addr_t placement_addr = 0;
 
-static addr_t kmalloc_internal(uint32_t size, bool align, addr_t *phys)
+static addr_t kmalloc_internal(uint32_t size, bool align)
 {
   if (align == TRUE && (placement_addr & 0xFFFFF000))
   {
     placement_addr &= 0xFFFFF000;
     placement_addr += KB_4;
   }
- 
-  if (phys)
-  {
-    *phys = placement_addr;
-  }
- 
+
   addr_t tmp = placement_addr;
   placement_addr += size;
   return tmp;
@@ -40,25 +35,15 @@ static addr_t kmalloc_internal(uint32_t size, bool align, addr_t *phys)
 
 addr_t kmalloc_a(uint32_t size)
 {
-  return kmalloc_internal(size, 1, 0);
-}
-
-addr_t kmalloc_p(uint32_t size, addr_t *phys)
-{
-  return kmalloc_internal(size, 0, phys);
-}
-
-addr_t kmalloc_ap(uint32_t size, addr_t *phys)
-{
-  return kmalloc_internal(size, 1, phys);
+  return kmalloc_internal(size, TRUE);
 }
 
 addr_t kmalloc(uint32_t size)
 {
-  return kmalloc_internal(size, 0, 0);
+  return kmalloc_internal(size, FALSE);
 }
 
-addr_t kmalloc_init(addr_t addr) 
+addr_t kmalloc_init(addr_t addr)
 {
   placement_addr = addr;
   return placement_addr;
