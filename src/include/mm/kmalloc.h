@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _mm_kmalloc_h
-#define _mm_kmalloc_h
+#ifndef _mm_kmalloc_h_
+#define _mm_kmalloc_h_
 
 #include "std/types.h"
 

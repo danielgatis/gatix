@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _init_multiboot_h
-#define _init_multiboot_h
+#ifndef _init_multiboot_h_
+#define _init_multiboot_h_
 
 /* How many bytes from the start of the file we search for the header. */
 #define MULTIBOOT_SEARCH                        8192

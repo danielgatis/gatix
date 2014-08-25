@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _arch_arch_h
-#define _arch_arch_h
+#ifndef _arch_arch_h_
+#define _arch_arch_h_
 
 #include "std/types.h"
 

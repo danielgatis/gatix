@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_logging_h
-#define _std_logging_h
+#ifndef _std_logging_h_
+#define _std_logging_h_
 
 #include "std/types.h"
 

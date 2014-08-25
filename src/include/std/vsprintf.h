@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _std_vsprintf_h
-#define _std_vsprintf_h
+#ifndef _std_vsprintf_h_
+#define _std_vsprintf_h_
 
 #include "std/stdarg.h"
 
