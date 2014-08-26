@@ -22,9 +22,6 @@ FLAGS       equ  MBALIGN | MEMINFO
 MAGIC       equ  0x1BADB002
 CHECKSUM    equ -(MAGIC + FLAGS)
 
-global loader_main
-
-extern kernel_main
 extern kernel_start
 extern kernel_end
 
@@ -33,7 +30,7 @@ align 4
   dd MAGIC
   dd FLAGS
   dd CHECKSUM
- 
+
 section .bootstrap_stack
 align 4
   stack_bottom:
@@ -41,15 +38,21 @@ align 4
   stack_top:
 
 section .text
-loader_main:
+global start
+start:
   ; init stack
   mov   esp, stack_top
 
   ; multiboot info
-  push  ebx      
-  
+  push  ebx
+
   ; call main
+  extern kernel_main
   call  kernel_main
-  
-  ; hang up
-  jmp   $
+
+  ; disable interrupts
+  cli
+
+.hang:
+  hlt
+  jmp  .hang

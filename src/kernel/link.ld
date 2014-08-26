@@ -17,7 +17,7 @@
  */
 
 OUTPUT_FORMAT(elf32-i386)
-ENTRY(loader_main)
+ENTRY(start)
 SECTIONS
 {
   . = 1M;
