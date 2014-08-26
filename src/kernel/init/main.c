@@ -32,8 +32,6 @@
 #include "arch/irq.h"
 #include "arch/pit.h"
 
-#include "mm/kmalloc.h"
-
 extern uint32_t kernel_start;
 extern uint32_t kernel_end;
 
@@ -89,9 +87,6 @@ int kernel_main(multiboot_info_t *mboot_ptr)
 
   kdebugf("IRQ\n");
   irq_init(gdt_entries.kcode);
-
-  kdebugf("KMALLOC\n");
-  kmalloc_init((addr_t)&kernel_end);
 
   kdebugf("PIT\n");
   timer_init();
