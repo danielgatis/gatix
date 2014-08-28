@@ -107,9 +107,6 @@ void isr_handler(registers_t *registers)
   else
   {
     kprintf(exception_messages[registers->int_no] + '\n');
-    kprintf("Exception. System Halted!\n");
-
-    __asm__ __volatile__ ("cli");
-    __asm__ __volatile__ ("hlt");
+    kprintf("Unhandled ISR!\n");
   }
 }

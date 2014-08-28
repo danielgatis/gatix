@@ -43,5 +43,7 @@ extern void irq15();
 void irq_remap();
 void irq_handler(registers_t *registers);
 void irq_init(uint16_t kcode);
+void disable_interrupts();
+void enable_interrupts();
 
 #endif

@@ -70,16 +70,6 @@ static void print_mboot(const multiboot_info_t *mboot_ptr)
   kprintf("%dkB higher memory (%dMB)\n", mboot_ptr->mem_upper, mboot_ptr->mem_upper / 1024);
 }
 
-static void disable_interrupts()
-{
-  __asm__ __volatile__("cli");
-}
-
-static void enable_interrupts()
-{
-  __asm__ __volatile__("sti");
-}
-
 int kernel_main(multiboot_info_t *mboot_ptr)
 {
   disable_interrupts();

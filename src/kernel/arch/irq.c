@@ -20,6 +20,16 @@
 #include "arch/idt.h"
 #include "arch/arch.h"
 
+void disable_interrupts()
+{
+  __asm__ __volatile__("cli");
+}
+
+void enable_interrupts()
+{
+  __asm__ __volatile__("sti");
+}
+
 void irq_remap()
 {
   outb(0x20, 0x11);
