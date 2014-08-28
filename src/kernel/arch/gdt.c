@@ -21,7 +21,7 @@
 gdt_entry_t gdt_entries[GDT_NUM_ENTRIES];
 gdt_ptr_t gdt_ptr;
 
-uint16_t gdt_add_entry(gdt_index_t index, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags)
+uint16_t gdt_add_entry(size_t index, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags)
 {
   gdt_entries[index].base_low = base & 0xFFFF;
   gdt_entries[index].base_middle = (base >> 16) & 0xFF;
@@ -39,10 +39,17 @@ gdt_entries_t gdt_init()
   gdt_ptr.base  = (int32_t)&gdt_entries;
 
   gdt_entries_t entries;
-  entries.kcode = gdt_add_entry(GDT_INDEX_KCODE, 0x00000000, 0xffffffff, ACCESS_KCODE, GDT_FLAGS);
-  entries.ucode = gdt_add_entry(GDT_INDEX_UCODE, 0x00000000, 0xffffffff, ACCESS_UCODE, GDT_FLAGS);
-  entries.kdata = gdt_add_entry(GDT_INDEX_KDATA, 0x00000000, 0xffffffff, ACCESS_KDATA, GDT_FLAGS);
-  entries.udata = gdt_add_entry(GDT_INDEX_UDATA, 0x00000000, 0xffffffff, ACCESS_UDATA, GDT_FLAGS);
+
+  /* null gate */
+  gdt_add_entry(0, 0, 0, 0, 0);
+
+  /* kernel mode gates */
+  entries.kcode = gdt_add_entry(1, 0x00000000, 0xffffffff, ACCESS_KCODE, GDT_FLAGS);
+  entries.kdata = gdt_add_entry(2, 0x00000000, 0xffffffff, ACCESS_KDATA, GDT_FLAGS);
+
+  /* user mode gates */
+  entries.ucode = gdt_add_entry(3, 0x00000000, 0xffffffff, ACCESS_UCODE, GDT_FLAGS);
+  entries.udata = gdt_add_entry(4, 0x00000000, 0xffffffff, ACCESS_UDATA, GDT_FLAGS);
 
   gdt_flush(&gdt_ptr);
 

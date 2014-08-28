@@ -37,18 +37,12 @@
 #define GDT_FLAG_GRANULARITY    (0x01 << 7) /* granularity (0 for 1B-1MB, 1 for 4KB-4GB) */
 
 #define ACCESS_KCODE (GDT_ACCESS_PRESENT | GDT_ACCESS_RING0 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW | GDT_ACCESS_EXECUTE)
-#define ACCESS_UCODE (GDT_ACCESS_PRESENT | GDT_ACCESS_RING3 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW | GDT_ACCESS_EXECUTE)
 #define ACCESS_KDATA (GDT_ACCESS_PRESENT | GDT_ACCESS_RING0 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW)
-#define ACCESS_UDATA (GDT_ACCESS_PRESENT | GDT_ACCESS_RING3 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW)
-#define GDT_FLAGS    (GDT_FLAG_GRANULARITY | GDT_FLAG_32BIT)
 
-typedef enum
-{
-  GDT_INDEX_KCODE = 0x01,
-  GDT_INDEX_KDATA = 0x02,
-  GDT_INDEX_UCODE = 0x03,
-  GDT_INDEX_UDATA = 0x04
-} gdt_index_t;
+#define ACCESS_UCODE (GDT_ACCESS_PRESENT | GDT_ACCESS_RING3 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW | GDT_ACCESS_EXECUTE)
+#define ACCESS_UDATA (GDT_ACCESS_PRESENT | GDT_ACCESS_RING3 | GDT_ACCESS_ALWAYS1 | GDT_ACCESS_RW)
+
+#define GDT_FLAGS    (GDT_FLAG_GRANULARITY | GDT_FLAG_32BIT)
 
 typedef struct
 {
@@ -75,7 +69,7 @@ typedef struct
 } __attribute__((packed)) gdt_ptr_t;
 
 gdt_entries_t gdt_init();
-uint16_t gdt_add_entry(gdt_index_t index, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags);
+uint16_t gdt_add_entry(size_t index, uint32_t base, uint32_t limit, uint8_t access, uint8_t flags);
 extern void gdt_flush(gdt_ptr_t *gdt_ptr);
 
 #endif
