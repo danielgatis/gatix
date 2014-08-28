@@ -26,3 +26,23 @@ On **root directory** run:
 ```bash
 sh scripts/run.sh
 ```
+
+How can I debug?
+---------------------
+On **root directory** run:
+```bash
+sh scripts/debug.sh
+```
+
+At other terminal session on **root directory** run:
+```bash
+gdb -symbols build/gatix.bin.sym
+```
+
+On **gdb**:
+```
+ (gdb) target remote localhost:1234
+ (gdb) break <foobar>
+ (gdb) continue
+```
+
