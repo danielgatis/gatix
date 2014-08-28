@@ -25,6 +25,7 @@
 #include "std/types.h"
 #include "std/utils.h"
 #include "std/logging.h"
+#include "std/system.h"
 
 #include "cpu/gdt.h"
 #include "cpu/idt.h"
@@ -48,8 +49,6 @@ static void print_mboot(const multiboot_info_t *mboot_ptr)
   kprintf("Mem Hi: 0x%x\n", mboot_ptr->mem_upper);
   kprintf("Boot d: 0x%x\n", mboot_ptr->boot_device);
   kprintf("cmdlin: 0x%x\n", mboot_ptr->cmdline);
-  kprintf("Mods  : 0x%x\n", mboot_ptr->mods_count);
-  kprintf("Addr  : 0x%x\n", mboot_ptr->mods_addr);
   kprintf("MMap  : 0x%x\n", mboot_ptr->mmap_length);
   kprintf("Addr  : 0x%x\n", mboot_ptr->mmap_addr);
   kprintf("Drives: 0x%x\n", mboot_ptr->drives_length);
@@ -64,10 +63,13 @@ static void print_mboot(const multiboot_info_t *mboot_ptr)
   kprintf("VBE of: 0x%x\n", mboot_ptr->vbe_interface_off);
   kprintf("VBE le: 0x%x\n", mboot_ptr->vbe_interface_len);
   kprintf("(End multiboot raw data)\n");
-  kprintf("Started with: %s\n", (char *)mboot_ptr->cmdline);
-  kprintf("Booted from: %s\n", (char *)mboot_ptr->boot_loader_name);
+  kprintf("Started with: %s\n",mboot_ptr->cmdline);
+  kprintf("Booted from: %s\n", mboot_ptr->boot_loader_name);
   kprintf("%dkB lower memory (%dMB)\n", mboot_ptr->mem_lower, mboot_ptr->mem_lower / 1024);
   kprintf("%dkB higher memory (%dMB)\n", mboot_ptr->mem_upper, mboot_ptr->mem_upper / 1024);
+  kprintf("Modules:\n");
+  kprintf("count: %d\n", mboot_ptr->mods_count);
+  kprintf("addr: 0x%x\n", mboot_ptr->mods_addr);
 }
 
 int kernel_main(multiboot_info_t *mboot_ptr)
@@ -97,6 +99,10 @@ int kernel_main(multiboot_info_t *mboot_ptr)
   keyboard_init();
 
   print_mboot(mboot_ptr);
+
+  /* multiboot_module_t *mod = (multiboot_module_t *) mboot_ptr->mods_addr; */
+  /* mod++; */
+  /* ((callable_multiboot_module_t)mod)(); */
 
   enable_interrupts();
 

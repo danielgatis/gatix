@@ -21,6 +21,7 @@
 
 #include "std/types.h"
 
+typedef void (*callable_multiboot_module_t)(void);
 void outb(uint16_t port, uint8_t value);
 uint8_t inb(uint16_t port);
 

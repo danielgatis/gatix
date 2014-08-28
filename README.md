@@ -36,7 +36,7 @@ sh scripts/debug.sh
 
 At other terminal session on **root directory** run:
 ```bash
-gdb -symbols build/gatix.bin.sym
+gdb -symbols build/kernel/kernel.bin.sym
 ```
 
 On **gdb**:

@@ -1,2 +1,2 @@
-mov eax, 0xCAFEBABE
+mov eax, 0xcafebabe
 jmp $
