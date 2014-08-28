@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _arch_idt_h_
-#define _arch_idt_h_
+#ifndef _cpu_idt_h_
+#define _cpu_idt_h_
 
 #include "std/types.h"
 

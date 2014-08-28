@@ -16,14 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _arch_arch_h_
-#define _arch_arch_h_
+#include "std/system.h"
 
-#include "std/types.h"
+void outb(uint16_t port, uint8_t value)
+{
+  __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (value));
+}
 
-void outb(uint16_t port, uint8_t value);
-uint8_t inb(uint16_t port);
+uint8_t inb(uint16_t port)
+{
+  uint8_t ret;
+  __asm__ __volatile__ ("inb %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
+}
 
-uint16_t inw(uint16_t port);
-
-#endif
+uint16_t inw(uint16_t port)
+{
+  uint16_t ret;
+  __asm__ __volatile__ ("inw %1, %0" : "=a" (ret) : "dN" (port));
+  return ret;
+}

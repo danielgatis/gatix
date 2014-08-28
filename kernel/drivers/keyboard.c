@@ -19,9 +19,9 @@
 #include "drivers/keyboard.h"
 #include "drivers/vga.h"
 
-#include "arch/arch.h"
-#include "arch/idt.h"
+#include "cpu/idt.h"
 
+#include "std/system.h"
 #include "std/utils.h"
 #include "std/logging.h"
 

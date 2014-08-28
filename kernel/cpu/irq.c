@@ -16,9 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/irq.h"
-#include "arch/idt.h"
-#include "arch/arch.h"
+#include "cpu/irq.h"
+#include "cpu/idt.h"
+
+#include "std/system.h"
 
 void disable_interrupts()
 {

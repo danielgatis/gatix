@@ -16,23 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/arch.h"
+#ifndef _cpu_pit_h_
+#define _cpu_pit_h_
 
-void outb(uint16_t port, uint8_t value)
-{
-  __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (value));
-}
+#include "std/types.h"
 
-uint8_t inb(uint16_t port)
-{
-  uint8_t ret;
-  __asm__ __volatile__ ("inb %1, %0" : "=a" (ret) : "dN" (port));
-  return ret;
-}
+void timer_phase(uint32_t hz);
+void timer_handler(registers_t *registers);
+void timer_init();
 
-uint16_t inw(uint16_t port)
-{
-  uint16_t ret;
-  __asm__ __volatile__ ("inw %1, %0" : "=a" (ret) : "dN" (port));
-  return ret;
-}
+#endif

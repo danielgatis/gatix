@@ -16,11 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _arch_isr_h_
-#define _arch_isr_h_
+#ifndef _cpu_isr_h_
+#define _cpu_isr_h_
 
 #include "std/types.h"
-
 extern void isr0();
 extern void isr1();
 extern void isr2();

@@ -18,8 +18,7 @@
 
 #include "drivers/vga.h"
 
-#include "arch/arch.h"
-
+#include "std/system.h"
 #include "std/string.h"
 #include "std/utils.h"
 

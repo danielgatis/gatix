@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/gdt.h"
+#include "cpu/gdt.h"
 
 gdt_entry_t gdt_entries[GDT_NUM_ENTRIES];
 gdt_ptr_t gdt_ptr;

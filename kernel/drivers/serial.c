@@ -18,8 +18,7 @@
 
 #include "drivers/serial.h"
 
-#include "arch/arch.h"
-
+#include "std/system.h"
 #include "std/vsprintf.h"
 
 #define SERIAL_DATA(base)               (base)
@@ -95,7 +94,7 @@ size_t write(uint8_t *data, size_t len)
 {
   size_t i;
 
-  for (i = 0; *data && i < len; ++data, ++i) 
+  for (i = 0; *data && i < len; ++data, ++i)
   {
     write_char(*data);
   }

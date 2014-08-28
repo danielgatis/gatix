@@ -26,11 +26,11 @@
 #include "std/utils.h"
 #include "std/logging.h"
 
-#include "arch/gdt.h"
-#include "arch/idt.h"
-#include "arch/isr.h"
-#include "arch/irq.h"
-#include "arch/pit.h"
+#include "cpu/gdt.h"
+#include "cpu/idt.h"
+#include "cpu/isr.h"
+#include "cpu/irq.h"
+#include "cpu/pit.h"
 
 extern uint32_t kernel_start;
 extern uint32_t kernel_end;

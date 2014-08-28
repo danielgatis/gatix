@@ -16,34 +16,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _arch_irq_h_
-#define _arch_irq_h_
+#include "cpu/pit.h"
+#include "cpu/idt.h"
 
-#include "std/types.h"
+#include "std/system.h"
+#include "std/utils.h"
 
-#define IRQ(x) ((x) + 0x20)
+uint32_t timer_ticks = 0;
 
-extern void irq0();
-extern void irq1();
-extern void irq2();
-extern void irq3();
-extern void irq4();
-extern void irq5();
-extern void irq6();
-extern void irq7();
-extern void irq8();
-extern void irq9();
-extern void irq10();
-extern void irq11();
-extern void irq12();
-extern void irq13();
-extern void irq14();
-extern void irq15();
+void timer_phase(uint32_t frequency)
+{
+  uint32_t divisor = 1193180 / frequency;
+  outb(0x43, 0x36);
 
-void irq_remap();
-void irq_handler(registers_t *registers);
-void irq_init(uint16_t kcode);
-void disable_interrupts();
-void enable_interrupts();
+  uint8_t l = (uint8_t)(divisor & 0xFF);
+  uint8_t h = (uint8_t)((divisor>>8) & 0xFF);
 
-#endif
+  outb(0x40, l);
+  outb(0x40, h);
+}
+
+void timer_handler(registers_t *registers)
+{
+  UNUSED(registers);
+
+  timer_ticks++;
+}
+
+void timer_init()
+{
+  timer_phase(50);
+  idt_set_handler(0, timer_handler);
+}

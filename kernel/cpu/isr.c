@@ -16,8 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "arch/isr.h"
-#include "arch/idt.h"
+#include "cpu/isr.h"
+#include "cpu/idt.h"
 
 #include "drivers/vga.h"
 

@@ -16,13 +16,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _arch_pit_h_
-#define _arch_pit_h_
+#ifndef _cpu_irq_h_
+#define _cpu_irq_h_
 
 #include "std/types.h"
 
-void timer_phase(uint32_t hz);
-void timer_handler(registers_t *registers);
-void timer_init();
+#define IRQ(x) ((x) + 0x20)
+
+extern void irq0();
+extern void irq1();
+extern void irq2();
+extern void irq3();
+extern void irq4();
+extern void irq5();
+extern void irq6();
+extern void irq7();
+extern void irq8();
+extern void irq9();
+extern void irq10();
+extern void irq11();
+extern void irq12();
+extern void irq13();
+extern void irq14();
+extern void irq15();
+
+void irq_remap();
+void irq_handler(registers_t *registers);
+void irq_init(uint16_t kcode);
+void disable_interrupts();
+void enable_interrupts();
 
 #endif
