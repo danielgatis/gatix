@@ -1,35 +1,15 @@
 cmake_minimum_required (VERSION 2.8)
 PROJECT (gatix)
 
-SET (CMAKE_C_LINK_FLAGS "-m elf_i386 -T${PROJECT_SOURCE_DIR}/kernel/link.ld")
-SET (CMAKE_C_FLAGS "-m32 -std=gnu99 -ffreestanding -O2 -Wall -Wextra -Werror -lgcc -g -gdwarf-2")
-SET (CMAKE_C_LINK_EXECUTABLE "/usr/bin/ld <CMAKE_C_LINK_FLAGS> <OBJECTS> -o <TARGET>")
-SET (CMAKE_ASM_NASM_OBJECT_FORMAT "elf32")
+ADD_SUBDIRECTORY (kernel)
+ADD_SUBDIRECTORY (modules)
 
-ENABLE_LANGUAGE (ASM_NASM)
-
-INCLUDE_DIRECTORIES ("kernel/include")
-
-FILE (GLOB_RECURSE gatix_C_SOURCES "*.c")
-FILE (GLOB_RECURSE gatix_ASM_SOURCES "*.asm")
-
-ADD_EXECUTABLE (gatix.bin ${gatix_C_SOURCES} ${gatix_ASM_SOURCES})
-
-ADD_CUSTOM_COMMAND (
-  TARGET gatix.bin POST_BUILD
-  COMMENT "Building debug symbols"
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-  COMMAND objcopy --only-keep-debug build/gatix.bin build/gatix.bin.sym
-  COMMAND objcopy --strip-debug build/gatix.bin
-)
-
-ADD_CUSTOM_COMMAND (
-  TARGET gatix.bin POST_BUILD
+ADD_CUSTOM_TARGET ( iso
   COMMENT "Building bootable ISO img"
-  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-  COMMAND rm -fr build/iso
-  COMMAND mkdir -p build/iso/boot/grub
-  COMMAND cp build/gatix.bin build/iso/boot/gatix.bin
-  COMMAND cp -R iso/* build/iso
-  COMMAND grub-mkrescue -o build/iso/gatix.iso build/iso >/dev/null 2>&1
+  COMMAND mkdir -p iso/boot/grub
+  COMMAND mkdir -p iso/modules
+  COMMAND cp ../grub/grub.cfg iso/boot/grub
+  COMMAND cp kernel/kernel.bin iso/boot/kernel.bin
+  COMMAND cp modules/**/*.a iso/modules
+  COMMAND grub-mkrescue -o gatix.iso iso >/dev/null 2>&1
 )

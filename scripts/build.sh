@@ -16,4 +16,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-qemu-system-i386 -k en-us -monitor stdio -serial /dev/tty -vga std -m 128 -s -S build/gatix.iso
+rm build/* -fr && cd build && cmake .. && make && make iso && cd ..

@@ -1,0 +1,9 @@
+cmake_minimum_required (VERSION 2.8)
+PROJECT (cafe_babe)
+
+  SET(CMAKE_ASM_NASM_OBJECT_FORMAT bin)
+ENABLE_LANGUAGE (ASM_NASM)
+
+FILE (GLOB_RECURSE ASM_SOURCES "*.asm")
+
+ADD_LIBRARY (cafe_babe STATIC ${ASM_SOURCES})

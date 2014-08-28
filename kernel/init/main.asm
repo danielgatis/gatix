@@ -38,8 +38,8 @@ align 4
   stack_top:
 
 section .text
-global start
-start:
+global _start
+_start:
   ; init stack
   mov   esp, stack_top
 
