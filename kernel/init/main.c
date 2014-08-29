@@ -43,33 +43,33 @@ static gdt_entries_t gdt_entries;
 
 static void print_mboot(const multiboot_info_t *mboot_ptr)
 {
-  kprintf("MULTIBOOT raw data:\n");
-  kprintf("Flags : 0x%x\n", mboot_ptr->flags);
-  kprintf("Mem Lo: 0x%x\n", mboot_ptr->mem_lower);
-  kprintf("Mem Hi: 0x%x\n", mboot_ptr->mem_upper);
-  kprintf("Boot d: 0x%x\n", mboot_ptr->boot_device);
-  kprintf("cmdlin: 0x%x\n", mboot_ptr->cmdline);
-  kprintf("MMap  : 0x%x\n", mboot_ptr->mmap_length);
-  kprintf("Addr  : 0x%x\n", mboot_ptr->mmap_addr);
-  kprintf("Drives: 0x%x\n", mboot_ptr->drives_length);
-  kprintf("Addr  : 0x%x\n", mboot_ptr->drives_addr);
-  kprintf("Config: 0x%x\n", mboot_ptr->config_table);
-  kprintf("Loader: 0x%x\n", mboot_ptr->boot_loader_name);
-  kprintf("APM   : 0x%x\n", mboot_ptr->apm_table);
-  kprintf("VBE Co: 0x%x\n", mboot_ptr->vbe_control_info);
-  kprintf("VBE Mo: 0x%x\n", mboot_ptr->vbe_mode_info);
-  kprintf("VBE In: 0x%x\n", mboot_ptr->vbe_mode);
-  kprintf("VBE se: 0x%x\n", mboot_ptr->vbe_interface_seg);
-  kprintf("VBE of: 0x%x\n", mboot_ptr->vbe_interface_off);
-  kprintf("VBE le: 0x%x\n", mboot_ptr->vbe_interface_len);
-  kprintf("(End multiboot raw data)\n");
-  kprintf("Started with: %s\n",mboot_ptr->cmdline);
-  kprintf("Booted from: %s\n", mboot_ptr->boot_loader_name);
-  kprintf("%dkB lower memory (%dMB)\n", mboot_ptr->mem_lower, mboot_ptr->mem_lower / 1024);
-  kprintf("%dkB higher memory (%dMB)\n", mboot_ptr->mem_upper, mboot_ptr->mem_upper / 1024);
-  kprintf("Modules:\n");
-  kprintf("count: %d\n", mboot_ptr->mods_count);
-  kprintf("addr: 0x%x\n", mboot_ptr->mods_addr);
+  kdebugf("MULTIBOOT raw data:\n");
+  kdebugf("Flags : 0x%x\n", mboot_ptr->flags);
+  kdebugf("Mem Lo: 0x%x\n", mboot_ptr->mem_lower);
+  kdebugf("Mem Hi: 0x%x\n", mboot_ptr->mem_upper);
+  kdebugf("Boot d: 0x%x\n", mboot_ptr->boot_device);
+  kdebugf("cmdlin: 0x%x\n", mboot_ptr->cmdline);
+  kdebugf("MMap  : 0x%x\n", mboot_ptr->mmap_length);
+  kdebugf("Addr  : 0x%x\n", mboot_ptr->mmap_addr);
+  kdebugf("Drives: 0x%x\n", mboot_ptr->drives_length);
+  kdebugf("Addr  : 0x%x\n", mboot_ptr->drives_addr);
+  kdebugf("Config: 0x%x\n", mboot_ptr->config_table);
+  kdebugf("Loader: 0x%x\n", mboot_ptr->boot_loader_name);
+  kdebugf("APM   : 0x%x\n", mboot_ptr->apm_table);
+  kdebugf("VBE Co: 0x%x\n", mboot_ptr->vbe_control_info);
+  kdebugf("VBE Mo: 0x%x\n", mboot_ptr->vbe_mode_info);
+  kdebugf("VBE In: 0x%x\n", mboot_ptr->vbe_mode);
+  kdebugf("VBE se: 0x%x\n", mboot_ptr->vbe_interface_seg);
+  kdebugf("VBE of: 0x%x\n", mboot_ptr->vbe_interface_off);
+  kdebugf("VBE le: 0x%x\n", mboot_ptr->vbe_interface_len);
+  kdebugf("(End multiboot raw data)\n");
+  kdebugf("Started with: %s\n",mboot_ptr->cmdline);
+  kdebugf("Booted from: %s\n", mboot_ptr->boot_loader_name);
+  kdebugf("%dkB lower memory (%dMB)\n", mboot_ptr->mem_lower, mboot_ptr->mem_lower / 1024);
+  kdebugf("%dkB higher memory (%dMB)\n", mboot_ptr->mem_upper, mboot_ptr->mem_upper / 1024);
+  kdebugf("Modules:\n");
+  kdebugf("count: %d\n", mboot_ptr->mods_count);
+  kdebugf("addr: 0x%x\n", mboot_ptr->mods_addr);
 }
 
 int kernel_main(multiboot_info_t *mboot_ptr)
@@ -80,34 +80,31 @@ int kernel_main(multiboot_info_t *mboot_ptr)
   serial_driver = serial_init();
   logging_init(vga_driver, serial_driver);
 
-  kdebugf("GDT\n");
+  kprintf("GDT\n");
   gdt_entries = gdt_init();
 
-  kdebugf("IDT\n");
+  kprintf("IDT\n");
   idt_init();
 
-  kdebugf("ISR\n");
+  kprintf("ISR\n");
   isr_init(gdt_entries.kcode);
 
-  kdebugf("IRQ\n");
+  kprintf("IRQ\n");
   irq_init(gdt_entries.kcode);
 
-  kdebugf("PIT\n");
+  kprintf("PIT\n");
   timer_init();
 
-  kdebugf("KBD\n");
+  kprintf("KBD\n");
   keyboard_init();
 
   print_mboot(mboot_ptr);
 
-  /* multiboot_module_t *mod = (multiboot_module_t *) mboot_ptr->mods_addr; */
-  /* mod++; */
-  /* ((callable_multiboot_module_t)mod)(); */
-
   enable_interrupts();
 
-  for (;;) {};
+  multiboot_module_t *mod = (multiboot_module_t *) mboot_ptr->mods_addr;
+  callable_t cafe_babe = (callable_t)mod->mod_start;
+  cafe_babe();
 
   return 0xdeadbeef;
 }
-

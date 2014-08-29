@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 2.8)
+CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 PROJECT (kernel)
 
 SET (CMAKE_C_LINK_FLAGS "-m elf_i386 -T${PROJECT_SOURCE_DIR}/link.ld")
